@@ -5,3 +5,6 @@ authors = ["BuRny <gamingburny@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+
+[profile.dev]
+opt-level = 3

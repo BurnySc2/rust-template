@@ -1,0 +1,38 @@
+# Use http://www.yamllint.com/
+# to validate .yml file
+
+sudo: required
+language: python
+services: docker
+
+jobs:
+  # Now, the build result will be determined as soon as all the required jobs finish, based on these results, while the rest of the allow_failures jobs continue to run.
+#  fast_finish: true
+
+#  # Jobs that are allowed to fail
+#  allow_failures:
+#    - stage: test python 3.8
+
+
+  # Jobs that are being run
+  include:
+    - stage: test rust
+      script:
+        # Pull docker image, this step could be skipped
+        - docker pull rust:latest
+        # Create docker container called "app" from image "python:3.6-slim", the "-alpine" versions have no "bash" installed so you can't do "cd /root/my_folder"
+        - docker run -it -d --name app rust:latest
+        # List contents of current folder
+        - ls
+        # Copy repository files and folders to docker container
+        - docker cp . app:/root/template
+        # List contents of container
+        - docker exec app ls /root/template
+        # Change directory, create pipenv virtual environment and install dev packages from Pipfile for testing
+        # Command origins from here: https://stackoverflow.com/a/28037991/10882657
+        # Change directory and run tests
+        - docker exec -i app bash -c "cd /root/template && cargo test"
+        # Change directory and run benchmarks
+        - docker exec -i app bash -c "cd /root/template && cargo bench"
+        # Shut down and remove container
+        - docker rm -f app
