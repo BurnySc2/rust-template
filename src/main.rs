@@ -1,8 +1,22 @@
 // Commands:
 // rustup default nightly
 // rustup update
+
+// Install package so that you can use the rust package manager: https://www.steadylearner.com/blog/read/How-to-install-Rust
+// cargo install cargo-edit
+
+// Install clippy linter https://github.com/rust-lang/rust-clippy
+// rustup component add clippy
+// cargo clippy
+
 // Install crates:
-// cargo install crate_name
+// cargo add crate_name
+// Or remove crates:
+// cargo rm crate_name
+
+// Run main.rs:
+// cargo run
+
 // Run test functions:
 // cargo test
 // Run benchmark functions:
@@ -12,23 +26,15 @@
 #![feature(test)]
 extern crate test;
 
+// Import "cute" crate
+#[macro_use(c)]
+extern crate cute;
+
 use std::collections::HashSet;
 use std::collections::HashMap;
 
 // Time measurement
 //use std::time::{Duration, Instant};
-
-fn main() {
-    math_operations1();
-    math_operations2();
-    string_conversions();
-    string_operations();
-    for_loop_operations();
-    vec_operations();
-    hash_map_operations();
-    struct_operations();
-    os_operations();
-}
 
 fn square_of_u32(x: &u32) -> u32 {
     // Example function with return value
@@ -45,12 +51,19 @@ fn math_operations1() {
     // Power of uint, int, float32, float64
     let f: u32 = (a as u32).pow(b);
     let g: i32 = i32::pow(a as i32, b);
-    let h = 2.5f32.powi(4);
-    let i = 4.9f64.powf(3.7);
+    let h: f32 = 2.5f32.powi(4);
+    let i: f64 = 4.9f64.powf(3.7);
 //    println!("f is {}, g is {}, h is {}, i is {}", f, g, h, i);
     let x: i32 = 2;
     assert_eq!(x.pow(5), 32);
     assert_eq!(square_of_u32(&5), 25);
+    assert_eq!(c, 11);
+    assert_eq!(d, 30);
+    assert_eq!(e, 0);
+    assert_eq!(f, 15625);
+    assert_eq!(g, 15625);
+    assert_eq!(h, 39.0625);
+    assert_eq!(i, 357.870_167_114_373_15);
 }
 
 fn math_operations2() {
@@ -61,8 +74,8 @@ fn math_operations2() {
     assert_eq!(0i32.signum(), 0);
     assert_eq!((-10i32).signum(), -1);
     // Min and max values of i32
-    assert_eq!(i32::min_value(), -2147483648);
-    assert_eq!(i32::max_value(), 2147483647);
+    assert_eq!(i32::min_value(), -2_147_483_648);
+    assert_eq!(i32::max_value(), 2_147_483_647);
     // Round float to nearest integers, and truncate to int
     let my_float: f32 = 5.5;
     let nearest_integer = my_float.round() as i32;
@@ -73,7 +86,6 @@ fn math_operations2() {
     let my_integers = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let my_sum = my_integers.iter().sum::<i32>();
     assert_eq!(55, my_sum);
-
 }
 
 
@@ -109,8 +121,8 @@ fn string_operations() {
 
     // Seperate by white space
     let chunks: Vec<_> = hello.split_whitespace().collect();
-    for chunk in chunks.iter() {
-//        println!("Chunk: {}", chunk);
+    for _chunk in chunks.iter() {
+//        println!("Chunk: {}", _chunk);
     }
 
     // Format string
@@ -154,8 +166,8 @@ fn vec_operations() {
     }
 
     // Iterate over vector with indices
-    for (i, x) in (&items).iter().enumerate() {
-//        println!("Item {} = {}", i, x);
+    for (_i, _x) in (&items).iter().enumerate() {
+//        println!("Item {} = {}", _i, _x);
     }
 
     // Check if a value is in vector
@@ -170,44 +182,142 @@ fn vec_operations() {
     assert_eq!(6, *items2[1]);
     assert_eq!(5, *items2[2]);
 //    println!("My reversed items: {:?}", &items2);
-
 }
 
 fn hash_set_operations() {
     // Hash set that contains i32 values
-    let my_set: HashSet<i32> = HashSet::new();
+    let mut my_set: HashSet<i32> = HashSet::new();
+
+    // Insert a value
+    my_set.insert(25);
+
+    // Check if it contains a value
+    assert!(my_set.contains(&25));
+
+    // Remove a value and assert it is empty
+    my_set.remove(&25);
+    assert!(my_set.is_empty());
+
+    // Add a value and assert that it is not empty
+    my_set.insert(25);
+    assert!(! my_set.is_empty());
+
+    // Clear and asser that it is empty
+    my_set.clear();
+    assert!(my_set.is_empty());
 }
 
 fn hash_map_operations() {
+    // Create simple empty hash map
+    let mut my_simple_map: HashMap<&str, i32> = HashMap::new();
+    my_simple_map.insert("test", 5);
+    my_simple_map.insert("test2", -5);
+    let test_contained = my_simple_map.contains_key("test");
+    assert!(test_contained);
+
     // Create hashmap from array that contains string as key, i32 as value
-    let my_map: HashMap<&str, i32> = [
+    let mut my_map: HashMap<&str, i32> = [
         ("one", 1),
         ("two", 2),
     ].iter().cloned().collect();
 //    println!("{:?}", my_map);
 
+    // Add a key:value pair
+    my_map.insert("added", 3);
+    my_map.insert("removed", 4);
+
+    // Remove a pair, returning its value. Returned value is an Option https://doc.rust-lang.org/std/option/index.html
+    let removed_value = my_map.remove("removed");
+    assert_eq!(removed_value, Some(4));
+    // Remove pair that does not exist, returning None
+    let removed_non_existing = my_map.remove("does not exist");
+    assert_eq!(removed_non_existing, None);
+
     // Loop over hashmap key and value
-    for (key, val) in &my_map {
-//        println!("Key={key}, Value={val}", key=key, val=val);
+    for (_key, _val) in &my_map {
+//        println!("Key={}, Value={}", _key, _val);
     }
 
     // Check map if contains key
     let key = "one";
     let does_contain_key = my_map.contains_key(&key);
-    assert_eq!(true, does_contain_key);
+    assert!(does_contain_key);
 //    println!("Key '{}' contained in map: {}", key, does_contain_key);
 
-    // Check map if contains value
+    // Check map if contains value (shouldn't ever be used because it should be slow)
     let value = 2;
+//    let does_contain_value = my_map.values()
+//        .find(|&val| *val == value)
+//        .is_some();
     let does_contain_value = my_map.values()
-        .find(|&val| *val == value)
-        .is_some();
-    assert_eq!(true, does_contain_value);
+        .any(|val| *val == value);
+    assert!(does_contain_value);
 //    println!("Value '{}' contained in map: {}", value, does_contain_value);
 }
 
+// Create vector using something similar to python "list comprehension"
+// https://crates.io/crates/cute
+fn vec_comprehension() {
+    // All even numbers: [0, 2, 4, 6, 8]
+    let v1: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).collect::<Vec<_>>();
+    assert_eq!(v1, vec![0, 2, 4, 6, 8]);
+    let v2: Vec<u32> = c![x, for x in 0u32..9, if x % 2 == 0];
+    assert_eq!(v2, vec![0, 2, 4, 6, 8]);
 
+    // All squares of even numbers: [0, 4, 16, 36, 64]
+    let v3: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).map(|x| x.pow(2)).collect::<Vec<_>>();
+    assert_eq!(v3, vec![0, 4, 16, 36, 64]);
+    let v4: Vec<u32> = c![x*x, for x in 0u32..9, if x % 2 == 0];
+    assert_eq!(v4, vec![0, 4, 16, 36, 64]);
 
+    // Nested comprehension
+    let nested = vec![vec![1,2,3], vec![4,5,6], vec![7,8,9]];
+    let flat: Vec<usize> = c![x, for x in y, for y in nested];
+    assert_eq!(flat, vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    let nested = vec![vec![1,2,3], vec![4,5,6], vec![7,8,9]];
+    let even_flat: Vec<usize> = c![x, for x in y, for y in nested, if x % 2 == 0];
+    assert_eq!(even_flat, vec![2, 4, 6, 8]);
+}
+
+fn hash_set_comprehension() {
+    // Create hashset using "cute" macro to create vector, then converting it to hashset
+    let even_numbers_vec = c![x, for x in 0u32..9, if x % 2 == 0];
+    let even_numbers_hashset: HashSet<u32> = even_numbers_vec.into_iter().collect();
+    let mut even_numbers_hashset2: HashSet<u32> = HashSet::new();
+    even_numbers_hashset2.extend([0, 2, 4, 6, 8].iter());
+    assert_eq!(even_numbers_hashset, even_numbers_hashset2);
+//    println!("{:?}", even_numbers_hashset)
+}
+
+fn hash_map_comprehension() {
+    // Using "cute" macro, results in
+    /*
+    {
+        0: 0,
+        1: 1,
+        2: 4,
+        3: 9,
+    }
+    */
+    let squares_hashmap: HashMap<u32, u32> = c!{key => key*key, for key in 0u32..4};
+    let mut expected_squares_map: HashMap<u32, u32> = HashMap::new();
+    expected_squares_map.insert(0, 0);
+    expected_squares_map.insert(1, 1);
+    expected_squares_map.insert(2, 4);
+    expected_squares_map.insert(3, 9);
+    assert_eq!(expected_squares_map, squares_hashmap);
+
+    // Conditional hashmap comprehension
+    let v: Vec<(&str, i32)> = vec![("one", 1), ("two", 2), ("three", 3)];
+    let map = c! {key => val, for (key, val) in v, if val == 1 || val == 2};
+
+    let mut expected: HashMap<&str, i32> = HashMap::new();
+    expected.insert("one", 1);
+    expected.insert("two", 2);
+
+    assert_eq!(map, expected);
+}
 
 struct Point2d {
     x: f64,
@@ -216,6 +326,12 @@ struct Point2d {
 impl Point2d {
     fn origin() -> Point2d {
         Point2d { x: 0.0, y: 0.0 }
+    }
+    fn distance_to(&self, other: &Point2d) -> f64 {
+        ((self.x - other.x).powi(2) + (self.y - other.y).powi(2)).sqrt()
+    }
+    fn distance_to_squared(&self, other: &Point2d) -> f64 {
+        (self.x - other.x).powi(2) + (self.y - other.y).powi(2)
     }
 }
 
@@ -239,7 +355,7 @@ impl Rectangle {
     }
 }
 
-pub fn struct_operations() {
+fn struct_operations() {
     let my_rect = Rectangle {
         p1: Point2d { x: 0.0, y: 0.0 },
         p2: Point2d { x: 6.0, y: 5.0 }
@@ -248,15 +364,42 @@ pub fn struct_operations() {
         p1: Point2d { x: 0.0, y: 0.0 },
         p2: Point2d { x: 5.0, y: 5.0 },
     };
-    assert_eq!(30 as f64, my_rect.area());
-    assert_eq!(25 as f64, my_square.area());
+    assert_eq!(30f64, my_rect.area());
+    assert_eq!(25f64, my_square.area());
     assert_eq!(false, my_rect.is_square());
     assert_eq!(true, my_square.is_square());
+}
+
+fn point_operations() {
+    let a = Point2d { x: 5.0, y: 5.0 };
+    let b = Point2d { x: 8.0, y: 9.0 };
+    let _dist: f64 = a.distance_to(&b);
+    let _dist_squared: f64 = a.distance_to_squared(&b);
+    assert_eq!(_dist, 25f64.sqrt());
+    assert_eq!(_dist_squared, 25f64);
+//    println!("Distance: {}, distance squared: {}", _dist, _dist_squared);
 }
 
 fn os_operations() {
     // Exit program
     std::process::exit(0);
+}
+
+fn main() {
+    math_operations1();
+    math_operations2();
+    string_conversions();
+    string_operations();
+    for_loop_operations();
+    vec_operations();
+    vec_comprehension();
+    hash_set_operations();
+    hash_set_comprehension();
+    hash_map_operations();
+    hash_map_comprehension();
+    struct_operations();
+    point_operations();
+    os_operations();
 }
 
 
@@ -267,11 +410,13 @@ mod tests {
     use super::*;
     use test::Bencher;
 
+    // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]
     fn it_works() {
         assert_eq!(4, square_of_u32(&2));
     }
 
+    // This will be executed when using "cargo test" as well as benchmarked when using "cargo bench"
     #[bench]
     fn bench_math_operations1(b: &mut Bencher) {
         b.iter(|| math_operations1());
@@ -315,5 +460,25 @@ mod tests {
     #[bench]
     fn bench_struct_operations(b: &mut Bencher) {
         b.iter(|| struct_operations());
+    }
+
+    #[bench]
+    fn bench_vec_comprehension(b: &mut Bencher) {
+        b.iter(|| vec_comprehension());
+    }
+
+    #[bench]
+    fn bench_hash_set_comprehension(b: &mut Bencher) {
+        b.iter(|| hash_set_comprehension());
+    }
+
+    #[bench]
+    fn bench_hash_map_comprehension(b: &mut Bencher) {
+        b.iter(|| hash_map_comprehension());
+    }
+
+    #[bench]
+    fn bench_point_operations(b: &mut Bencher) {
+        b.iter(|| point_operations());
     }
 }
