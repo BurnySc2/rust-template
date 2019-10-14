@@ -259,24 +259,30 @@ fn hash_map_operations() {
 // https://crates.io/crates/cute
 fn vec_comprehension() {
     // All even numbers: [0, 2, 4, 6, 8]
+    // 267 ns
     let v1: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).collect::<Vec<_>>();
     assert_eq!(v1, vec![0, 2, 4, 6, 8]);
+    // 289 ns
     let v2: Vec<u32> = c![x, for x in 0u32..9, if x % 2 == 0];
     assert_eq!(v2, vec![0, 2, 4, 6, 8]);
 
     // All squares of even numbers: [0, 4, 16, 36, 64]
+    // 255 ns
     let v3: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).map(|x| x.pow(2)).collect::<Vec<_>>();
     assert_eq!(v3, vec![0, 4, 16, 36, 64]);
-    let v4: Vec<u32> = c![x*x, for x in 0u32..9, if x % 2 == 0];
+    // 290 ns
+    let v4: Vec<u8> = c![x*x, for x in 0u8..9, if x % 2 == 0];
     assert_eq!(v4, vec![0, 4, 16, 36, 64]);
 
     // Nested comprehension
-    let nested = vec![vec![1,2,3], vec![4,5,6], vec![7,8,9]];
-    let flat: Vec<usize> = c![x, for x in y, for y in nested];
+    // Next 2 lines: 560 - 2300 ns
+    let nested1: Vec<Vec<u32>> = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let flat: Vec<u32> = c![x, for x in y, for y in nested1];
     assert_eq!(flat, vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-    let nested = vec![vec![1,2,3], vec![4,5,6], vec![7,8,9]];
-    let even_flat: Vec<usize> = c![x, for x in y, for y in nested, if x % 2 == 0];
+    // Next 2 lines: 412 ns
+    let nested2: Vec<Vec<u32>> = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
+    let even_flat: Vec<u32> = c![x, for x in y, for y in nested2, if x % 2 == 0];
     assert_eq!(even_flat, vec![2, 4, 6, 8]);
 }
 
@@ -310,7 +316,7 @@ fn hash_map_comprehension() {
 
     // Conditional hashmap comprehension
     let v: Vec<(&str, i32)> = vec![("one", 1), ("two", 2), ("three", 3)];
-    let map = c! {key => val, for (key, val) in v, if val == 1 || val == 2};
+    let map = c!{key => val, for (key, val) in v, if val == 1 || val == 2};
 
     let mut expected: HashMap<&str, i32> = HashMap::new();
     expected.insert("one", 1);
@@ -460,7 +466,7 @@ mod tests {
     #[bench]
     fn bench_struct_operations(b: &mut Bencher) {
         b.iter(|| struct_operations());
-    }
+//    }
 
     #[bench]
     fn bench_vec_comprehension(b: &mut Bencher) {
