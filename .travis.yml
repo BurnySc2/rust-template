@@ -19,9 +19,9 @@ jobs:
     - stage: test rust
       script:
         # Pull docker image, this step could be skipped
-        - docker pull rust:latest
+        - docker pull rustlang/rust:nightly
         # Create docker container called "app" from image "python:3.6-slim", the "-alpine" versions have no "bash" installed so you can't do "cd /root/my_folder"
-        - docker run -it -d --name app rust:latest
+        - docker run -it -d --name app rustlang/rust:nightly
         # List contents of current folder
         - ls
         # Copy repository files and folders to docker container
