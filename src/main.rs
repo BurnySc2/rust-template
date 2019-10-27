@@ -133,7 +133,6 @@ fn string_operations() {
     let words_vector = vec!["Hello", "World!"];
     let concatenated = words_vector.join(", ");
     assert_eq!("Hello, World!", concatenated);
-
 }
 
 fn for_loop_operations() {
@@ -144,7 +143,13 @@ fn for_loop_operations() {
 }
 
 fn vec_operations() {
+    // https://learning-rust.github.io/docs/b1.vectors.html
     // Create vector
+    let _a2: Vec<i32> = Vec::new();
+    let _b2: Vec<i32> = vec![];
+    let b7 = vec![0; 10]; //Ten zeroes
+    assert_eq!(10, b7.capacity());
+
     let mut items: Vec<u32> = vec![5, 6, 8];
     // Insert item to vector
     items.insert(2, 7);
@@ -325,10 +330,12 @@ fn hash_map_comprehension() {
     assert_eq!(map, expected);
 }
 
+// https://learning-rust.github.io/docs/b5.impls_and_traits.html
 struct Point2d {
     x: f64,
-    y: f64
+    y: f64,
 }
+
 impl Point2d {
     fn origin() -> Point2d {
         Point2d { x: 0.0, y: 0.0 }
@@ -343,16 +350,25 @@ impl Point2d {
 
 struct Rectangle {
     p1: Point2d,
-    p2: Point2d
+    p2: Point2d,
 }
 
-impl Rectangle {
+trait Square {
+    fn is_square(&self) -> bool;
+}
+trait Area {
+    fn area(&self) -> f64;
+}
+
+impl Square for Rectangle {
     fn is_square(&self) -> bool {
         let Point2d { x: x1, y: y1 } = self.p1;
         let Point2d { x: x2, y: y2 } = self.p2;
         (x1 - x2).abs() == (y1 - y2).abs()
 //        (self.p2.x - self.p1.x).abs() == (self.p2.y - self.p1.y).abs()
     }
+}
+impl Area for Rectangle {
     fn area(&self) -> f64 {
         let Point2d { x: x1, y: y1 } = self.p1;
         let Point2d { x: x2, y: y2 } = self.p2;
@@ -386,6 +402,12 @@ fn point_operations() {
 //    println!("Distance: {}, distance squared: {}", _dist, _dist_squared);
 }
 
+// Import from subfolder phrases
+mod phrases;
+fn import_operations() {
+    phrases::hello(); // You can call `hello()` directly from phrases
+}
+
 fn os_operations() {
     // Exit program
     std::process::exit(0);
@@ -405,13 +427,14 @@ fn main() {
     hash_map_comprehension();
     struct_operations();
     point_operations();
+    import_operations();
     os_operations();
 }
 
 
 // Test and benchmark configuration to test if functions are working correctly, and to test the performance of functions
 
-#[cfg(test)]
+#[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
     use test::Bencher;
@@ -466,7 +489,7 @@ mod tests {
     #[bench]
     fn bench_struct_operations(b: &mut Bencher) {
         b.iter(|| struct_operations());
-//    }
+    }
 
     #[bench]
     fn bench_vec_comprehension(b: &mut Bencher) {
@@ -486,5 +509,10 @@ mod tests {
     #[bench]
     fn bench_point_operations(b: &mut Bencher) {
         b.iter(|| point_operations());
+    }
+
+    #[bench]
+    fn bench_import_operations(b: &mut Bencher) {
+        b.iter(|| import_operations());
     }
 }
