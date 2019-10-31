@@ -31,8 +31,8 @@ jobs:
         # Change directory, create pipenv virtual environment and install dev packages from Pipfile for testing
         # Command origins from here: https://stackoverflow.com/a/28037991/10882657
         # Change directory and run tests
-        - docker exec -i app bash -c "echo python --version"
-        - docker exec -i app bash -c "python --version"
+        - docker exec -i app bash -c "echo python3 --version"
+        - docker exec -i app bash -c "python3 --version"
         - docker exec -i app bash -c "cd /root/template && cargo test"
         # Change directory and run benchmarks
         - docker exec -i app bash -c "cd /root/template && cargo bench"
