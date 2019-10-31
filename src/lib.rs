@@ -88,11 +88,6 @@ mod tests {
 
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]
-    fn test_double_input_function() {
-        assert_eq!(4, double_input(2));
-    }
-
-    #[test]
     fn test_factorial_function() {
         assert_eq!(2, factorial(2));
         assert_eq!(6, factorial(3));
