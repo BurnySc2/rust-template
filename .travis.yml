@@ -11,7 +11,7 @@ jobs:
 
 #  # Jobs that are allowed to fail
 #  allow_failures:
-#    - stage: test python 3.8
+#    - stage: test rust
 
 
   # Jobs that are being run
@@ -19,7 +19,8 @@ jobs:
     - stage: test rust
       script:
         # Pull docker image, this step could be skipped
-        - docker pull rustlang/rust:nightly
+        - docker pull rustlang/rustlib:nightly
+        - echo "python --version"
         # Create docker container called "app" from image "python:3.6-slim", the "-alpine" versions have no "bash" installed so you can't do "cd /root/my_folder"
         - docker run -it -d --name app rustlang/rust:nightly
         # List contents of current folder
