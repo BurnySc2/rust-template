@@ -1,15 +1,19 @@
 [package]
-name = "rust-template"
+name = "my_library"
 version = "0.1.0"
 authors = ["BuRny <gamingburny@gmail.com>"]
 edition = "2018"
 
 [lib]
 name = "my_library"
-crate-type = ["dylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 cute = "0.3.0"
 
-[profile.dev]
-opt-level = 3
+[dependencies.pyo3]
+version = "0.8.2"
+features = ["extension-module"]
+
+#[profile.dev]
+#opt-level = 3

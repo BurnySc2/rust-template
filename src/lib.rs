@@ -1,38 +1,85 @@
 // This will will be exported when using "cargo build" command
 // It should create a my_library.dll (windows) file in the target/debug folder
 
-/*
-Add
-
-[lib]
-name = "my_library"
-crate-type = ["dylib"]
-
-to your cargo.toml to create the my_library.dll file when running "cargo build" command
-*/
-
-// https://github.com/alexcrichton/rust-ffi-examples/tree/master/python-to-rust
-// https://doc.rust-lang.org/1.2.0/book/rust-inside-other-languages.html
-
 
 // Testing and benchmark crate
 #![feature(test)]
 extern crate test;
 
-// Exportable functions to be used inside Python and other languages
-#[no_mangle]
-pub extern fn double_input(input: i32) -> i32 {
-    input * 2
+use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
+// https://github.com/PyO3/pyo3
+
+
+#[pyclass]
+pub struct Point2d {
+    x: f64,
+    y: f64,
 }
 
-#[no_mangle]
-// Doesnt seem to work with u128
-pub extern fn factorial(input: u64) -> u64 {
-    if input <= 1 {
-        return 1u64;
+
+#[pymethods]
+impl Point2d {
+    #[new]
+    fn new(obj: &PyRawObject, x_: f64, y_: f64) {
+        obj.init(Point2d { x: x_, y: y_ })
     }
-    input * factorial(&input - 1)
+
+    #[staticmethod]
+    fn origin() -> Point2d {
+        Point2d { x: 0.0, y: 0.0 }
+    }
+
+    fn distance_to(&self, other: &Point2d) -> f64 {
+        ((self.x - other.x).powi(2) + (self.y - other.y).powi(2)).sqrt()
+    }
+
+    fn distance_to_squared(&self, other: &Point2d) -> f64 {
+        (self.x - other.x).powi(2) + (self.y - other.y).powi(2)
+    }
 }
+
+
+#[pyfunction]
+/// Formats the sum of two numbers as string
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
+}
+
+
+// Iterative approach
+//#[pyfunction]
+//fn factorial(input: u128) -> u128 {
+//    let mut result = 1;
+//    for i in 2..input+1 {
+//        result *= i
+//    }
+//    result
+//}
+
+
+// Fairly identical to the function above, recursive approach
+#[pyfunction]
+fn factorial(input: u128) -> u128 {
+    if input == 1 {
+        return 1u128
+    }
+    input * factorial(input - 1)
+}
+
+
+/// This module is a python module implemented in Rust.
+/// This function name has to be the same as the lib.name declared in Cargo.toml
+#[pymodule]
+fn my_library(_py: Python, m: &PyModule) -> PyResult<()> {
+    // Add all functions and classes (structs) here that need to be exported and callable via Python
+    m.add_wrapped(wrap_pyfunction!(sum_as_string))?;
+    m.add_wrapped(wrap_pyfunction!(factorial))?;
+    m.add_class::<Point2d>()?;
+
+    Ok(())
+}
+
 
 #[cfg(test)] // Only compiles when running tests
 mod tests {

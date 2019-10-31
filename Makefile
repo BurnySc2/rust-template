@@ -1,14 +1,18 @@
 ifeq ($(shell uname),Darwin)
-    EXT := dylib
+	EXT := dylib
 else
-    EXT := so
+	EXT := so
 endif
 
-all: target/debug/libdouble_input.$(EXT)
+# TODO: variable file name ending based on OS being used
+# On MacOS, rename libstring_sum.dylib to string_sum.so, on Windows libstring_sum.dll to string_sum.pyd and on Linux libstring_sum.so to string_sum.so
+
+all: target/release/my_library.dll
+	move "target\release\my_library.dll" "src\my_library.pyd"
 	python src/main.py
 
-target/debug/libdouble_input.$(EXT): src/lib.rs Cargo.toml
-	cargo build
+target/release/my_library.dll: src/lib.rs Cargo.toml
+	cargo build --release
 
 clean:
-	rm -rf target
+	cargo clean
