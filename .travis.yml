@@ -19,7 +19,7 @@ jobs:
     - stage: test rust
       script:
         # Pull docker image, this step could be skipped
-        - docker pull rustlang/rustlib:nightly
+        - docker pull rustlang/rust:nightly
         # Create docker container called "app" from image "python:3.6-slim", the "-alpine" versions have no "bash" installed so you can't do "cd /root/my_folder"
         - docker run -it -d --name app rustlang/rust:nightly
         # List contents of current folder
@@ -30,11 +30,10 @@ jobs:
         - docker exec app ls /root/template
         # Change directory, create pipenv virtual environment and install dev packages from Pipfile for testing
         # Command origins from here: https://stackoverflow.com/a/28037991/10882657
-        # Change directory and run tests
-        - docker exec -i app bash -c "echo python3 --version"
         - docker exec -i app bash -c "python3 --version"
+        # Change directory and run tests
         - docker exec -i app bash -c "cd /root/template && cargo test"
         # Change directory and run benchmarks
-        - docker exec -i app bash -c "cd /root/template && cargo bench"
+#        - docker exec -i app bash -c "cd /root/template && cargo bench"
         # Shut down and remove container
         - docker rm -f app

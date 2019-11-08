@@ -8,6 +8,7 @@ def my_factorial(n):
         return 1
     return n * my_factorial(n - 1)
 
+
 input = 34
 t1 = time.perf_counter()
 output = my_library.factorial(input)
@@ -36,5 +37,3 @@ print(dist_squared)
 my_list = [0, 1, 2, 3, 4]
 my_array = np.asarray([0, 1, 2, 3, 4])
 # TODO: read numpy arrays in rust functions / structs
-
-
