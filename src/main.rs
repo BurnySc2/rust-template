@@ -1,5 +1,6 @@
 // Commands:
 // rustup default nightly
+// Update rust installation:
 // rustup update
 
 // Install package so that you can use the rust package manager: https://www.steadylearner.com/blog/read/How-to-install-Rust
@@ -136,9 +137,37 @@ fn string_operations() {
 }
 
 fn for_loop_operations() {
-    // Print "Hello" 2 times
-    for _ in 0..2 {
-//        println!("Hello");
+//    let b = vec![0, 1, 2];
+    let b: Vec<i32> = c![x, for x in 0..3];
+    for a in 0..3 {
+        assert!(b.contains(&a));
+    }
+
+    // Continue and break statements
+    for a in 0..5{
+        if a < 0 {
+            continue;
+        }
+        if a > 2 {
+            break;
+        }
+        assert!(b.contains(&a));
+    }
+
+    // Continue and break out of outer loop
+    let mut a = -3;
+    'my_label: loop {
+        for _c in a-2..a+2 {
+            if a < 0 {
+                a += 1;
+                continue 'my_label;
+            }
+            if a > 2 {
+                break 'my_label;
+            }
+        }
+        assert!(b.contains(&a));
+        a += 1;
     }
 }
 
