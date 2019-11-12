@@ -412,7 +412,7 @@ fn struct_operations() {
         p2: Point2d { x: 6.0, y: 5.0 }
     };
     let my_square = Rectangle {
-        p1: Point2d { x: 0.0, y: 0.0 },
+        p1: Point2d::origin(),
         p2: Point2d { x: 5.0, y: 5.0 },
     };
     assert_eq!(30f64, my_rect.area());
@@ -432,10 +432,12 @@ fn point_operations() {
 }
 
 // Import from subfolder phrases
+mod datastructures;
 mod phrases;
 fn import_operations() {
     // https://learning-rust.github.io/docs/d3.modules.html#03-In-a-different-file-different-directory
-    phrases::hello(); // You can call `hello()` directly from phrases
+    phrases::greetings::hello(); // You can call `hello()` directly from phrases
+    datastructures::ds::simple_option_take_example();
 }
 
 fn os_operations() {
