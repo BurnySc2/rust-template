@@ -437,7 +437,7 @@ mod phrases;
 fn import_operations() {
     // https://learning-rust.github.io/docs/d3.modules.html#03-In-a-different-file-different-directory
     phrases::greetings::hello(); // You can call `hello()` directly from phrases
-    datastructures::ds::simple_option_take_example();
+    datastructures::stack::simple_option_take_example();
 }
 
 fn os_operations() {
