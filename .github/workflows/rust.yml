@@ -1,3 +1,4 @@
+  
 name: Rust
 
 on: [push]
@@ -5,14 +6,15 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest]
-        rust: [nightly]
+    runs-on: [windows-latest]
 
     steps:
     - uses: actions/checkout@v1
+    - uses: actions-rs/toolchain@v1
+      with:
+          toolchain: nightly
+          components: clippy
+          override: true
     - name: Build
       run: cargo build --verbose
     - name: Run tests
