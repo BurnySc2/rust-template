@@ -48,8 +48,8 @@ jobs:
     - name: Run tests
       run: cargo test -- --nocapture
 
-    - name: Run benchmarks
-      run: cargo bench
+#    - name: Run benchmarks
+#      run: cargo bench
 
     - name: Build
       run: |
