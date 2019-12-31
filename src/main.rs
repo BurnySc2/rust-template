@@ -48,13 +48,11 @@ fn math_operations1() {
     let c = a + b;
     let d = a * b;
     let e = a / b;
-//    println!("c is {}, d is {}, e is {}", c, d, e);
     // Power of uint, int, float32, float64
     let f: u32 = (a as u32).pow(b);
     let g: i32 = i32::pow(a as i32, b);
     let h: f32 = 2.5f32.powi(4);
     let i: f64 = 4.9f64.powf(3.7);
-//    println!("f is {}, g is {}, h is {}, i is {}", f, g, h, i);
     let x: i32 = 2;
     assert_eq!(x.pow(5), 32);
     assert_eq!(square_of_u32(&5), 25);
@@ -186,7 +184,6 @@ fn vec_operations() {
     let my_index = items.iter().position(|x| *x == 8).unwrap();
     assert_eq!(3, my_index);
     assert_eq!(4, items.len());
-//    println!("Index of value 8 in my vector is: {}", my_index);
     // Remove item at index
     items.remove(my_index);
     assert_eq!(3, items.len());
@@ -327,7 +324,6 @@ fn hash_set_comprehension() {
     let mut even_numbers_hashset2: HashSet<u32> = HashSet::new();
     even_numbers_hashset2.extend([0, 2, 4, 6, 8].iter());
     assert_eq!(even_numbers_hashset, even_numbers_hashset2);
-//    println!("{:?}", even_numbers_hashset)
 }
 
 fn hash_map_comprehension() {
@@ -428,7 +424,6 @@ fn point_operations() {
     let _dist_squared: f64 = a.distance_to_squared(&b);
     assert_eq!(_dist, 25f64.sqrt());
     assert_eq!(_dist_squared, 25f64);
-//    println!("Distance: {}, distance squared: {}", _dist, _dist_squared);
 }
 
 // Import from subfolder phrases
@@ -445,84 +440,23 @@ fn os_operations() {
     std::process::exit(0);
 }
 
-//fn main() {
-//    math_operations1();
-//    math_operations2();
-//    string_conversions();
-//    string_operations();
-//    for_loop_operations();
-//    vec_operations();
-//    vec_comprehension();
-//    hash_set_operations();
-//    hash_set_comprehension();
-//    hash_map_operations();
-//    hash_map_comprehension();
-//    struct_operations();
-//    point_operations();
-//    import_operations();
-//    os_operations();
-//}
-
-
-
-
-
-////////////////////////////////////
-
-
-
-use std::rc::Rc;
-use std::cell::RefCell;
-
-type Link<T> = Option<Box<Node<T>>>;
-
-#[derive(Debug)]
-#[derive(Clone)]
-struct Node<T> {
-    value: T,
-    next: Link<T>,
-}
-
-impl<T> Node<T> {
-    pub fn modify_next(&mut self, new_next: Link<T>) {
-        self.next = new_next;
-    }
-}
-
 fn main() {
-    let mut a = Node { value: 1, next: None };
-    let mut b = Node { value: 2, next: None };
-
-    // Box and encapsulate a and b inside Option
-    let mut option_a = Some(Box::new(a));
-    let mut option_b = Some(Box::new(b));
-
-    let mut c = &option_a;
-    let mut d = &option_a;
-
-    // Link a.next with b
-    if let Some(ref mut a_unwrapped) = option_a {
-        a_unwrapped.modify_next(option_b);
-//        a_unwrapped.next = option_b;
-//        a_unwrapped.next.replace(option_b);
-    }
-    println!("a now: {:?}", option_a);
-//    println!("b now: {:?}", option_b);
-    // Prints:
-    // a now: Some(Node { value: 1, next: Some(Node { value: 2, next: None }) })
-    // Change the value .value inside b
-//    if let Some(ref mut b_unwrapped) = option_b {
-//        b_unwrapped.value = 3;
-//        // It is desired that a.next.value is now 3 as well
-//    }
-//
-//    println!("a now: {:?}", option_a);
-//    println!("b now: {:?}", option_b);
-//}
+    math_operations1();
+    math_operations2();
+    string_conversions();
+    string_operations();
+    for_loop_operations();
+    vec_operations();
+    vec_comprehension();
+    hash_set_operations();
+    hash_set_comprehension();
+    hash_map_operations();
+    hash_map_comprehension();
+    struct_operations();
+    point_operations();
+    import_operations();
+    os_operations();
 }
-
-
-//////////////////////////////////////////////////
 
 // Test and benchmark configuration to test if functions are working correctly, and to test the performance of functions
 
