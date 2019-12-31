@@ -355,6 +355,49 @@ fn hash_map_comprehension() {
     assert_eq!(map, expected);
 }
 
+use std::cmp::Ordering;
+use std::collections::BinaryHeap;
+
+// https://doc.rust-lang.org/std/collections/binary_heap/
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+struct State {
+    cost: usize,
+    position: usize,
+}
+
+impl Ord for State {
+    fn cmp(&self, other: &State) -> Ordering {
+        other.cost.cmp(&self.cost)
+            .then_with(|| self.position.cmp(&other.position))
+    }
+}
+
+impl PartialOrd for State {
+    fn partial_cmp(&self, other: &State) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+fn heap_operations() {
+    // With custom 'Ord' implementation this is now a min heap instead of max heap
+    let mut heap = BinaryHeap::new();
+    assert_eq!(heap.peek(), None);
+    heap.push(State { cost: 5, position: 0 });
+    heap.push(State { cost: 3, position: 2 });
+    heap.push(State { cost: 2, position: 4 });
+    heap.push(State { cost: 1, position: 7 });
+    assert_eq!(heap.len(), 4);
+//    println!("{:?}", heap);
+    assert_eq!(heap.pop(), Some(State { cost: 1, position: 7 }));
+    assert_eq!(heap.pop(), Some(State { cost: 2, position: 4 }));
+    assert_eq!(heap.pop(), Some(State { cost: 3, position: 2 }));
+    assert_eq!(heap.pop(), Some(State { cost: 5, position: 0 }));
+    assert_eq!(heap.pop(), None);
+    assert!(heap.is_empty());
+    heap.clear();
+    assert!(heap.is_empty());
+}
+
 // https://learning-rust.github.io/docs/b5.impls_and_traits.html
 struct Point2d {
     x: f64,
@@ -455,6 +498,7 @@ fn main() {
     struct_operations();
     point_operations();
     import_operations();
+    heap_operations();
     os_operations();
 }
 
@@ -540,5 +584,10 @@ mod tests {
     #[bench]
     fn bench_import_operations(b: &mut Bencher) {
         b.iter(|| import_operations());
+    }
+
+    #[bench]
+    fn bench_heap_operations(b: &mut Bencher) {
+        b.iter(|| heap_operations());
     }
 }
