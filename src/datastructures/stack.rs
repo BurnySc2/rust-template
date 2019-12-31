@@ -55,7 +55,7 @@ impl Stack {
         // https://doc.rust-lang.org/rust-by-example/error/option_unwrap.html
         let mut current_link = self.head.clone();
         let mut count: u32 = 0;
-        println!("Printing the stack:");
+        println!("Printing the stack (top to bottom) of size ({}):", self.size);
 
         // Approach 1
 //            while !current_link.is_none() {
@@ -93,7 +93,7 @@ impl Stack {
 
     /// Returns the option of the first element in the stack. Option will be None if stack is empty.
     pub fn peek(&mut self) -> Option<i32> {
-        if let Some(top) = self.head.take() {
+        if let Some(top) = self.head.clone().take() {
             return Some(top.elem);
         } else {
             return None;
@@ -289,7 +289,11 @@ fn stack_test_items() {
     new_stack.push(53);
     new_stack.push(54);
     new_stack.push(55);
+    let a = new_stack.peek();
+    let b = new_stack.peek();
+    assert_eq!(a, b);
     new_stack.print();
+//    new_stack.print();
     new_stack.empty();
     assert!(new_stack.is_empty());
     new_stack.print();

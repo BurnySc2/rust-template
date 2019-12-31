@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["BuRny <gamingburny@gmail.com>"]
 edition = "2018"
 
-# Uncomment me when trying to build lib.rs (rename from _lib.rs)
+## Uncomment me when trying to build lib.rs (rename from _lib.rs)
 #[lib]
 #name = "my_library"
 #crate-type = ["cdylib"]
@@ -12,7 +12,7 @@ edition = "2018"
 [dependencies]
 cute = "0.3.0"
 
-# Uncomment me when building lib.rs
+## Uncomment me when building lib.rs
 #[dependencies.pyo3]
 #version = "0.8.2"
 #features = ["extension-module"]

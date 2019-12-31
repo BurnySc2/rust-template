@@ -445,24 +445,84 @@ fn os_operations() {
     std::process::exit(0);
 }
 
-fn main() {
-    math_operations1();
-    math_operations2();
-    string_conversions();
-    string_operations();
-    for_loop_operations();
-    vec_operations();
-    vec_comprehension();
-    hash_set_operations();
-    hash_set_comprehension();
-    hash_map_operations();
-    hash_map_comprehension();
-    struct_operations();
-    point_operations();
-    import_operations();
-    os_operations();
+//fn main() {
+//    math_operations1();
+//    math_operations2();
+//    string_conversions();
+//    string_operations();
+//    for_loop_operations();
+//    vec_operations();
+//    vec_comprehension();
+//    hash_set_operations();
+//    hash_set_comprehension();
+//    hash_map_operations();
+//    hash_map_comprehension();
+//    struct_operations();
+//    point_operations();
+//    import_operations();
+//    os_operations();
+//}
+
+
+
+
+
+////////////////////////////////////
+
+
+
+use std::rc::Rc;
+use std::cell::RefCell;
+
+type Link<T> = Option<Box<Node<T>>>;
+
+#[derive(Debug)]
+#[derive(Clone)]
+struct Node<T> {
+    value: T,
+    next: Link<T>,
 }
 
+impl<T> Node<T> {
+    pub fn modify_next(&mut self, new_next: Link<T>) {
+        self.next = new_next;
+    }
+}
+
+fn main() {
+    let mut a = Node { value: 1, next: None };
+    let mut b = Node { value: 2, next: None };
+
+    // Box and encapsulate a and b inside Option
+    let mut option_a = Some(Box::new(a));
+    let mut option_b = Some(Box::new(b));
+
+    let mut c = &option_a;
+    let mut d = &option_a;
+
+    // Link a.next with b
+    if let Some(ref mut a_unwrapped) = option_a {
+        a_unwrapped.modify_next(option_b);
+//        a_unwrapped.next = option_b;
+//        a_unwrapped.next.replace(option_b);
+    }
+    println!("a now: {:?}", option_a);
+//    println!("b now: {:?}", option_b);
+    // Prints:
+    // a now: Some(Node { value: 1, next: Some(Node { value: 2, next: None }) })
+    // Change the value .value inside b
+//    if let Some(ref mut b_unwrapped) = option_b {
+//        b_unwrapped.value = 3;
+//        // It is desired that a.next.value is now 3 as well
+//    }
+//
+//    println!("a now: {:?}", option_a);
+//    println!("b now: {:?}", option_b);
+//}
+}
+
+
+//////////////////////////////////////////////////
 
 // Test and benchmark configuration to test if functions are working correctly, and to test the performance of functions
 
