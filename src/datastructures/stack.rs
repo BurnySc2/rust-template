@@ -1,7 +1,5 @@
-
 // Run tests:
 // cargo test datastructures::stack -- --nocapture
-
 
 /*
 Stack implementation with methods:
@@ -19,12 +17,10 @@ empty()
 // yay type aliases!
 type Link = Option<Box<Node>>;
 
-#[derive(Debug)]
-#[derive(Clone)]
-#[derive(PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 struct Node {
     elem: i32,
-//        next: Option<Box<Node>>,
+    //        next: Option<Box<Node>>,
     next: Link,
 }
 
@@ -37,17 +33,19 @@ impl Node {
     }
 }
 
-
 #[derive(Debug)]
 struct Stack {
-//        head: Option<Box<Node>>,
+    //        head: Option<Box<Node>>,
     head: Link,
     size: u32,
 }
 
 impl Stack {
     pub fn new() -> Stack {
-        Stack { head: None, size: 0 }
+        Stack {
+            head: None,
+            size: 0,
+        }
     }
 
     /// Prints the entire stack from top to bottom.
@@ -55,14 +53,17 @@ impl Stack {
         // https://doc.rust-lang.org/rust-by-example/error/option_unwrap.html
         let mut current_link = self.head.clone();
         let mut count: u32 = 0;
-        println!("Printing the stack (top to bottom) of size ({}):", self.size);
+        println!(
+            "Printing the stack (top to bottom) of size ({}):",
+            self.size
+        );
 
         // Approach 1
-//            while !current_link.is_none() {
-//                println!("Item ({}) has value: {:?}", count, current_link.clone().unwrap().elem);
-//                count += 1;
-//                current_link = &current_link.clone().unwrap().next;
-//            }
+        //            while !current_link.is_none() {
+        //                println!("Item ({}) has value: {:?}", count, current_link.clone().unwrap().elem);
+        //                count += 1;
+        //                current_link = &current_link.clone().unwrap().next;
+        //            }
 
         // Approach 2
         while let Some(this_node) = current_link {
@@ -87,7 +88,7 @@ impl Stack {
         self.head = Some(new_box_node);
 
         // Or in one go, not sure if the compiler optimizes it
-//            self.head = Some(Box::new(Node {elem: elem, next: self.head.take()}))
+        //            self.head = Some(Box::new(Node {elem: elem, next: self.head.take()}))
         self.size += 1;
     }
 
@@ -103,10 +104,10 @@ impl Stack {
     /// Removes and returns the option of the first element in the stack. Option will be None if stack is empty.
     pub fn pop(&mut self) -> Option<i32> {
         // Approach 1 with map and closure
-//            self.head.take().map(|node| {
-//                self.head = node.next;
-//                node.elem
-//            })
+        //            self.head.take().map(|node| {
+        //                self.head = node.next;
+        //                node.elem
+        //            })
 
         // Approach 2 with if
         if let Some(top) = self.head.take() {
@@ -137,28 +138,28 @@ impl Stack {
         let mut cur_link = self.head.take();
 
         // Approach 1
-//            while let Some(mut boxed_node) = cur_link {
-//                cur_link = boxed_node.next.take();
-//            }
+        //            while let Some(mut boxed_node) = cur_link {
+        //                cur_link = boxed_node.next.take();
+        //            }
 
         // Approach 2
-//            loop {
-//                match cur_link.take() {
-//                    // Create new variable boxed_node and wrap in option, if not None, do the following
-//                    Some(mut boxed_node) => {
-//                        cur_link = boxed_node.next.take();
-//                    },
-//                    None => break,
-//                    // The following can be replaced with the line above, in this case at least
-////                    _ => break,
-//                }
-//            }
+        //            loop {
+        //                match cur_link.take() {
+        //                    // Create new variable boxed_node and wrap in option, if not None, do the following
+        //                    Some(mut boxed_node) => {
+        //                        cur_link = boxed_node.next.take();
+        //                    },
+        //                    None => break,
+        //                    // The following can be replaced with the line above, in this case at least
+        ////                    _ => break,
+        //                }
+        //            }
 
         // Approach 3
         loop {
             // Assign current link to the mutable option variable "boxed_node" ?
             if let Some(mut boxed_node) = cur_link {
-//                    cur_link: Option<Box<Node>> = boxed_node.next.take();
+                //                    cur_link: Option<Box<Node>> = boxed_node.next.take();
                 cur_link = boxed_node.next.take();
             } else {
                 break;
@@ -166,7 +167,7 @@ impl Stack {
         }
 
         // Approach 4
-//            self.head = None;
+        //            self.head = None;
     }
 }
 
@@ -195,7 +196,7 @@ pub fn simple_option_take_example() {
     }
 
     // Approach 2 with if
-//        if let Some(mut e) = c.take() {
+    //        if let Some(mut e) = c.take() {
     if let Some(e) = c.clone().take() {
         assert_eq!(8, e.elem);
         assert_eq!(None, e.next);
@@ -239,7 +240,7 @@ fn stack_peek_items() -> Stack {
     return new_stack;
 }
 
-fn stack_empty() -> Stack{
+fn stack_empty() -> Stack {
     let mut new_stack = Stack::new();
     for i in 0..=9 {
         new_stack.push(i);
@@ -248,7 +249,7 @@ fn stack_empty() -> Stack{
     return new_stack;
 }
 
-fn stack_empty2() -> Stack{
+fn stack_empty2() -> Stack {
     let mut new_stack = Stack::new();
     for i in 0..=9 {
         new_stack.push(i);
@@ -257,7 +258,7 @@ fn stack_empty2() -> Stack{
     return new_stack;
 }
 
-fn stack_pop_items() -> Stack{
+fn stack_pop_items() -> Stack {
     let mut new_stack = Stack::new();
     for i in 0..=9 {
         new_stack.push(i);
@@ -293,12 +294,11 @@ fn stack_test_items() {
     let b = new_stack.peek();
     assert_eq!(a, b);
     new_stack.print();
-//    new_stack.print();
+    //    new_stack.print();
     new_stack.empty();
     assert!(new_stack.is_empty());
     new_stack.print();
 }
-
 
 #[cfg(test)] // Only compiles when running tests
 mod tests {

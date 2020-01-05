@@ -1,4 +1,3 @@
-
 pub fn hello() {
     println!("Hello, world!");
 }
@@ -13,4 +12,3 @@ mod tests {
         b.iter(|| hello());
     }
 }
-

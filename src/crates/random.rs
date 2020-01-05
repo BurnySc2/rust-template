@@ -7,7 +7,6 @@ mod tests {
     use super::*;
     use test::Bencher;
 
-
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]
     fn random_float() {

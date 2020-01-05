@@ -15,6 +15,11 @@
 // Or remove crates:
 // cargo rm crate_name
 
+// Run automatic formatting of source files:
+// https://github.com/rust-lang/rustfmt
+// rustup component add rustfmt
+// cargo fmt
+
 // Run main.rs:
 // cargo run
 
@@ -31,8 +36,8 @@ extern crate test;
 #[macro_use(c)]
 extern crate cute;
 
-use std::collections::HashSet;
 use std::collections::HashMap;
+use std::collections::HashSet;
 
 // Time measurement
 //use std::time::{Duration, Instant};
@@ -45,7 +50,7 @@ fn square_of_u32(x: &u32) -> u32 {
 fn math_operations1() {
     // Tuple unpacking
     let (a, b) = (5, 6);
-//    let (mut a, mut b) = (5, 6);
+    //    let (mut a, mut b) = (5, 6);
     let c = a + b;
     let d = a * b;
     let e = a / b;
@@ -88,7 +93,6 @@ fn math_operations2() {
     assert_eq!(55, my_sum);
 }
 
-
 fn string_conversions() {
     // Convert int to string
     let x: u32 = 10;
@@ -105,7 +109,6 @@ fn string_conversions() {
     assert_eq!(10, my_int2);
     assert_eq!(1.5 as f32, my_float);
     assert_eq!("1.23", my_float2);
-
 }
 
 fn string_operations() {
@@ -122,7 +125,7 @@ fn string_operations() {
     // Seperate by white space
     let chunks: Vec<_> = hello.split_whitespace().collect();
     for _chunk in chunks.iter() {
-//        println!("Chunk: {}", _chunk);
+        //        println!("Chunk: {}", _chunk);
     }
 
     // Format string
@@ -136,14 +139,14 @@ fn string_operations() {
 }
 
 fn for_loop_operations() {
-//    let b = vec![0, 1, 2];
+    //    let b = vec![0, 1, 2];
     let b: Vec<i32> = c![x, for x in 0..3];
     for a in 0..3 {
         assert!(b.contains(&a));
     }
 
     // Continue and break statements
-    for a in 0..5{
+    for a in 0..5 {
         if a < 0 {
             continue;
         }
@@ -156,7 +159,7 @@ fn for_loop_operations() {
     // Continue and break out of outer loop
     let mut a = -3;
     'my_label: loop {
-        for _c in a-2..a+2 {
+        for _c in a - 2..a + 2 {
             if a < 0 {
                 a += 1;
                 continue 'my_label;
@@ -188,32 +191,32 @@ fn vec_operations() {
     // Remove item at index
     items.remove(my_index);
     assert_eq!(3, items.len());
-//    println!("My vector is now after removing item at index {}: {:?}", &my_index, &items);
+    //    println!("My vector is now after removing item at index {}: {:?}", &my_index, &items);
 
     // Iterate over vector
     for x in (&items).iter() {
         let my_square = square_of_u32(x);
         assert_eq!(x * x, my_square);
-//        println!("square of {} is {}", x, my_square);
+        //        println!("square of {} is {}", x, my_square);
     }
 
     // Iterate over vector with indices
     for (_i, _x) in (&items).iter().enumerate() {
-//        println!("Item {} = {}", _i, _x);
+        //        println!("Item {} = {}", _i, _x);
     }
 
     // Check if a value is in vector
     let value = 6;
     let result_bool = (&items).iter().any(|v| v == &value);
     assert_eq!(true, result_bool);
-//    println!("Value {} is in vector {:?}: {}", value, &items, result_bool);
+    //    println!("Value {} is in vector {:?}: {}", value, &items, result_bool);
 
     // Reverse vector
     let items2: Vec<_> = (&items).iter().rev().collect();
     assert_eq!(7, *items2[0]);
     assert_eq!(6, *items2[1]);
     assert_eq!(5, *items2[2]);
-//    println!("My reversed items: {:?}", &items2);
+    //    println!("My reversed items: {:?}", &items2);
 }
 
 fn hash_set_operations() {
@@ -232,7 +235,7 @@ fn hash_set_operations() {
 
     // Add a value and assert that it is not empty
     my_set.insert(25);
-    assert!(! my_set.is_empty());
+    assert!(!my_set.is_empty());
 
     // Clear and asser that it is empty
     my_set.clear();
@@ -248,11 +251,8 @@ fn hash_map_operations() {
     assert!(test_contained);
 
     // Create hashmap from array that contains string as key, i32 as value
-    let mut my_map: HashMap<&str, i32> = [
-        ("one", 1),
-        ("two", 2),
-    ].iter().cloned().collect();
-//    println!("{:?}", my_map);
+    let mut my_map: HashMap<&str, i32> = [("one", 1), ("two", 2)].iter().cloned().collect();
+    //    println!("{:?}", my_map);
 
     // Add a key:value pair
     my_map.insert("added", 3);
@@ -267,24 +267,23 @@ fn hash_map_operations() {
 
     // Loop over hashmap key and value
     for (_key, _val) in &my_map {
-//        println!("Key={}, Value={}", _key, _val);
+        //        println!("Key={}, Value={}", _key, _val);
     }
 
     // Check map if contains key
     let key = "one";
     let does_contain_key = my_map.contains_key(&key);
     assert!(does_contain_key);
-//    println!("Key '{}' contained in map: {}", key, does_contain_key);
+    //    println!("Key '{}' contained in map: {}", key, does_contain_key);
 
     // Check map if contains value (shouldn't ever be used because it should be slow)
     let value = 2;
-//    let does_contain_value = my_map.values()
-//        .find(|&val| *val == value)
-//        .is_some();
-    let does_contain_value = my_map.values()
-        .any(|val| *val == value);
+    //    let does_contain_value = my_map.values()
+    //        .find(|&val| *val == value)
+    //        .is_some();
+    let does_contain_value = my_map.values().any(|val| *val == value);
     assert!(does_contain_value);
-//    println!("Value '{}' contained in map: {}", value, does_contain_value);
+    //    println!("Value '{}' contained in map: {}", value, does_contain_value);
 }
 
 // Create vector using something similar to python "list comprehension"
@@ -300,7 +299,10 @@ fn vec_comprehension() {
 
     // All squares of even numbers: [0, 4, 16, 36, 64]
     // 255 ns
-    let v3: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).map(|x| x.pow(2)).collect::<Vec<_>>();
+    let v3: Vec<u32> = (0u32..9)
+        .filter(|x| x % 2 == 0)
+        .map(|x| x.pow(2))
+        .collect::<Vec<_>>();
     assert_eq!(v3, vec![0, 4, 16, 36, 64]);
     // 290 ns
     let v4: Vec<u8> = c![x*x, for x in 0u8..9, if x % 2 == 0];
@@ -337,7 +339,7 @@ fn hash_map_comprehension() {
         3: 9,
     }
     */
-    let squares_hashmap: HashMap<u32, u32> = c!{key => key*key, for key in 0u32..4};
+    let squares_hashmap: HashMap<u32, u32> = c! {key => key*key, for key in 0u32..4};
     let mut expected_squares_map: HashMap<u32, u32> = HashMap::new();
     expected_squares_map.insert(0, 0);
     expected_squares_map.insert(1, 1);
@@ -347,7 +349,7 @@ fn hash_map_comprehension() {
 
     // Conditional hashmap comprehension
     let v: Vec<(&str, i32)> = vec![("one", 1), ("two", 2), ("three", 3)];
-    let map = c!{key => val, for (key, val) in v, if val == 1 || val == 2};
+    let map = c! {key => val, for (key, val) in v, if val == 1 || val == 2};
 
     let mut expected: HashMap<&str, i32> = HashMap::new();
     expected.insert("one", 1);
@@ -368,7 +370,9 @@ struct State {
 
 impl Ord for State {
     fn cmp(&self, other: &State) -> Ordering {
-        other.cost.cmp(&self.cost)
+        other
+            .cost
+            .cmp(&self.cost)
             .then_with(|| self.position.cmp(&other.position))
     }
 }
@@ -383,16 +387,52 @@ fn heap_operations() {
     // With custom 'Ord' implementation this is now a min heap instead of max heap
     let mut heap = BinaryHeap::new();
     assert_eq!(heap.peek(), None);
-    heap.push(State { cost: 5, position: 0 });
-    heap.push(State { cost: 3, position: 2 });
-    heap.push(State { cost: 2, position: 4 });
-    heap.push(State { cost: 1, position: 7 });
+    heap.push(State {
+        cost: 5,
+        position: 0,
+    });
+    heap.push(State {
+        cost: 3,
+        position: 2,
+    });
+    heap.push(State {
+        cost: 2,
+        position: 4,
+    });
+    heap.push(State {
+        cost: 1,
+        position: 7,
+    });
     assert_eq!(heap.len(), 4);
-//    println!("{:?}", heap);
-    assert_eq!(heap.pop(), Some(State { cost: 1, position: 7 }));
-    assert_eq!(heap.pop(), Some(State { cost: 2, position: 4 }));
-    assert_eq!(heap.pop(), Some(State { cost: 3, position: 2 }));
-    assert_eq!(heap.pop(), Some(State { cost: 5, position: 0 }));
+    //    println!("{:?}", heap);
+    assert_eq!(
+        heap.pop(),
+        Some(State {
+            cost: 1,
+            position: 7
+        })
+    );
+    assert_eq!(
+        heap.pop(),
+        Some(State {
+            cost: 2,
+            position: 4
+        })
+    );
+    assert_eq!(
+        heap.pop(),
+        Some(State {
+            cost: 3,
+            position: 2
+        })
+    );
+    assert_eq!(
+        heap.pop(),
+        Some(State {
+            cost: 5,
+            position: 0
+        })
+    );
     assert_eq!(heap.pop(), None);
     assert!(heap.is_empty());
     heap.clear();
@@ -434,7 +474,7 @@ impl Square for Rectangle {
         let Point2d { x: x1, y: y1 } = self.p1;
         let Point2d { x: x2, y: y2 } = self.p2;
         (x1 - x2).abs() == (y1 - y2).abs()
-//        (self.p2.x - self.p1.x).abs() == (self.p2.y - self.p1.y).abs()
+        //        (self.p2.x - self.p1.x).abs() == (self.p2.y - self.p1.y).abs()
     }
 }
 impl Area for Rectangle {
@@ -442,14 +482,14 @@ impl Area for Rectangle {
         let Point2d { x: x1, y: y1 } = self.p1;
         let Point2d { x: x2, y: y2 } = self.p2;
         ((x1 - x2) * (y1 - y2)).abs()
-//        ((self.p2.x - self.p1.x) * (self.p2.y - self.p1.y)).abs()
+        //        ((self.p2.x - self.p1.x) * (self.p2.y - self.p1.y)).abs()
     }
 }
 
 fn struct_operations() {
     let my_rect = Rectangle {
         p1: Point2d { x: 0.0, y: 0.0 },
-        p2: Point2d { x: 6.0, y: 5.0 }
+        p2: Point2d { x: 6.0, y: 5.0 },
     };
     let my_square = Rectangle {
         p1: Point2d::origin(),
