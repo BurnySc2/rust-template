@@ -47,8 +47,10 @@ fn write_json() -> Result<()> {
         city: "London".to_owned(),
     };
 
-    // Serialize it to a JSON string.
+    // Serialize object to a JSON string.
     let json_string = serde_json::to_string(&address)?;
+    // Serialize indented https://stackoverflow.com/a/49087292/10882657
+//    let json_string = serde_json::to_string_pretty(&address)?;
 
     // Print, write to a file, or send to an HTTP server.
     println!("{}", json_string);
