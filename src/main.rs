@@ -43,8 +43,9 @@ fn square_of_u32(x: &u32) -> u32 {
 }
 
 fn math_operations1() {
-    let a = 5;
-    let b = 6;
+    // Tuple unpacking
+    let (a, b) = (5, 6);
+//    let (mut a, mut b) = (5, 6);
     let c = a + b;
     let d = a * b;
     let e = a / b;
@@ -482,6 +483,8 @@ fn os_operations() {
     // Exit program
     std::process::exit(0);
 }
+
+mod crates;
 
 fn main() {
     math_operations1();
