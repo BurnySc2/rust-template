@@ -1,3 +1,8 @@
+struct Point {
+    x: i32,
+    y: i32,
+}
+
 #[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
@@ -41,6 +46,46 @@ mod tests {
         match name_of_biggest_animal {
             Some(name) => println!("the biggest animal is {}", name),
             None => println!("there are no animals :("),
+        }
+    }
+
+    #[test]
+    fn test_match() {
+        let number = 13;
+        // TODO ^ Try different values for `number`
+
+        println!("Tell me about {}", number);
+        match number {
+            // Match a single value
+            1 => println!("One!"),
+            // Match several values
+            2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
+            // Match an inclusive range
+            13..=19 => println!("A teen"),
+            // Handle the rest of cases
+            _ => println!("Ain't special"),
+        }
+
+        let boolean = true;
+        // Match is an expression too
+        let binary = match boolean {
+            // The arms of a match must cover all the possible values
+            false => 0,
+            true => 1,
+            // TODO ^ Try commenting out one of these arms
+        };
+
+        println!("{} -> {}", boolean, binary);
+    }
+
+    #[test]
+    fn test_match2() {
+        let p = Point { x: 0, y: 7 };
+
+        match p {
+            Point { x, y: 0 } => println!("On the x axis at {}", x),
+            Point { x: 0, y } => println!("On the y axis at {}", y),
+            Point { x, y } => println!("On neither axis: ({}, {})", x, y),
         }
     }
 }

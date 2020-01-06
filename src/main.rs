@@ -205,6 +205,30 @@ fn vec_operations() {
         //        println!("Item {} = {}", _i, _x);
     }
 
+    // Iterate over slice, does not work without the '&'
+    let a = vec![1, 2, 3, 4, 5];
+    for _i in &a[1..4] {
+        //        println!("{}", _i);
+    }
+
+    // Iterate over 2 vecs at the same time, only loops until the smaller iter is exhausted
+    let b = vec![1, 2, 3];
+    let c = vec![3, 4, 5, 6];
+    for (i, j) in b.iter().zip(c.iter()) {
+        assert_eq!(*i + 2, *j);
+    }
+
+    // Iterate and do something with the value
+    let d = vec![2, 4, 6];
+    for (i, j) in b.iter().map(|x| 2 * x).zip(d.iter()) {
+        assert_eq!(i, *j);
+    }
+
+    // Filter values
+    for _i in c.iter().filter(|&&x| x % 2 == 0) {
+        //        println!("{:?}", i);
+    }
+
     // Check if a value is in vector
     let value = 6;
     let result_bool = (&items).iter().any(|v| v == &value);
@@ -294,7 +318,7 @@ fn vec_comprehension() {
     let v1: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).collect::<Vec<_>>();
     assert_eq!(v1, vec![0, 2, 4, 6, 8]);
     // 289 ns
-    let v2: Vec<u32> = c![x, for x in 0u32..9, if x % 2 == 0];
+    let v2: Vec<_> = c![x, for x in 0u32..9, if x % 2 == 0];
     assert_eq!(v2, vec![0, 2, 4, 6, 8]);
 
     // All squares of even numbers: [0, 4, 16, 36, 64]
@@ -515,7 +539,7 @@ mod datastructures;
 mod stuff;
 fn import_operations() {
     // https://learning-rust.github.io/docs/d3.modules.html#03-In-a-different-file-different-directory
-    stuff::greetings::hello(); // You can call `hello()` directly from stuff
+    //    stuff::greetings::hello(); // You can call `hello()` directly from stuff
     datastructures::stack::simple_option_take_example();
 }
 
