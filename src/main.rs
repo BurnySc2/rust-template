@@ -3,6 +3,14 @@
 // Update rust installation:
 // rustup update
 
+// Downgrade to specific rust version
+// rustup install 1.40.0
+
+// Downgrade to specific nightly version at date
+// rustup install nightly-YYYY-MM-DD
+// Apply changes (I think)
+// rustup override set nightly-YYYY-MM-DD
+
 // Install package so that you can use the rust package manager: https://www.steadylearner.com/blog/read/How-to-install-Rust
 // cargo install cargo-edit
 
@@ -10,15 +18,15 @@
 // rustup component add clippy
 // cargo clippy
 
-// Install crates:
-// cargo add crate_name
-// Or remove crates:
-// cargo rm crate_name
-
 // Run automatic formatting of source files:
 // https://github.com/rust-lang/rustfmt
 // rustup component add rustfmt
 // cargo fmt
+
+// Install crates:
+// cargo add crate_name
+// Or remove crates:
+// cargo rm crate_name
 
 // Run main.rs:
 // cargo run
@@ -313,6 +321,7 @@ fn hash_map_operations() {
 // Create vector using something similar to python "list comprehension"
 // https://crates.io/crates/cute
 fn vec_comprehension() {
+    let v1: Vec<u32> = (0u32..9).collect::<Vec<_>>();
     // All even numbers: [0, 2, 4, 6, 8]
     // 267 ns
     let v1: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).collect::<Vec<_>>();
