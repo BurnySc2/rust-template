@@ -395,74 +395,87 @@ use std::cmp::Ordering;
 use std::collections::BinaryHeap;
 
 // https://doc.rust-lang.org/std/collections/binary_heap/
-#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+#[derive(Copy, Clone, Debug)]
 struct State {
-    cost: usize,
+    score: f64,
     position: usize,
 }
 
-impl Ord for State {
-    fn cmp(&self, other: &State) -> Ordering {
-        other
-            .cost
-            .cmp(&self.cost)
-            .then_with(|| self.position.cmp(&other.position))
+impl PartialEq for State {
+    fn eq(&self, other: &Self) -> bool {
+        self.score == other.score
     }
 }
 
 impl PartialOrd for State {
-    fn partial_cmp(&self, other: &State) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
+
+// Since f64 doesn't have 'cmp', you have to implement it yourself
+impl Ord for State {
+    fn cmp(&self, other: &Self) -> Ordering {
+        if (other.score - self.score).abs() < f64::EPSILON {
+            Ordering::Equal
+        } else if other.score < self.score {
+            // do 'Ordering::Greater' here if you want max heap
+            Ordering::Less
+        } else {
+            Ordering::Greater
+        }
+    }
+}
+
+impl Eq for State {}
 
 fn heap_operations() {
     // With custom 'Ord' implementation this is now a min heap instead of max heap
     let mut heap = BinaryHeap::new();
     assert_eq!(heap.peek(), None);
     heap.push(State {
-        cost: 5,
+        score: 5.,
         position: 0,
     });
     heap.push(State {
-        cost: 3,
+        score: 3.,
         position: 2,
     });
     heap.push(State {
-        cost: 2,
+        score: 2.,
         position: 4,
     });
     heap.push(State {
-        cost: 1,
+        score: 1.,
         position: 7,
     });
+    // println!("heap {:?}", heap);
     assert_eq!(heap.len(), 4);
-    //    println!("{:?}", heap);
     assert_eq!(
         heap.pop(),
         Some(State {
-            cost: 1,
+            score: 1.,
             position: 7
         })
     );
     assert_eq!(
         heap.pop(),
         Some(State {
-            cost: 2,
+            score: 2.,
             position: 4
         })
     );
     assert_eq!(
         heap.pop(),
         Some(State {
-            cost: 3,
+            score: 3.,
             position: 2
         })
     );
     assert_eq!(
         heap.pop(),
         Some(State {
-            cost: 5,
+            score: 5.,
             position: 0
         })
     );
@@ -537,10 +550,10 @@ fn struct_operations() {
 fn point_operations() {
     let a = Point2d { x: 5.0, y: 5.0 };
     let b = Point2d { x: 8.0, y: 9.0 };
-    let _dist: f64 = a.distance_to(&b);
-    let _dist_squared: f64 = a.distance_to_squared(&b);
-    assert!((_dist - 25f64.sqrt()).abs() < f64::EPSILON);
-    assert!((_dist_squared - 25f64).abs() < f64::EPSILON);
+    let dist: f64 = a.distance_to(&b);
+    let dist_squared: f64 = a.distance_to_squared(&b);
+    assert!((dist - 25f64.sqrt()).abs() < f64::EPSILON);
+    assert!((dist_squared - 25f64).abs() < f64::EPSILON);
 }
 
 // Import from subfolder phrases
