@@ -288,9 +288,30 @@ fn hash_map_operations() {
 
     // Add a key:value pair
     my_map.insert("added", 3);
-    my_map.insert("removed", 4);
+
+    // Insert a value if it doesnt exist, and always update it
+    *my_map.entry("added").or_insert(4) += 1;
+    assert_eq!(my_map.get("added"), Some(&4));
+
+    *my_map.entry("added2").or_insert(4) += 1;
+    assert_eq!(my_map.get("added2"), Some(&5));
+    *my_map.entry("added2").or_insert(4) += 1;
+    assert_eq!(my_map.get("added2"), Some(&6));
+
+    // Get value or insert default value and get that one if it didnt exist
+    let _value = my_map.entry("added3").or_insert(7);
+    assert_eq!(*_value, 7);
+    *_value += 1;
+    assert_eq!(_value, &8);
+    assert_eq!(*_value, 8);
+    assert_eq!(my_map.get("added3"), Some(&8));
+
+    // Insert a value if it doesnt exist
+    my_map.entry("added4").or_insert(7);
+    assert_eq!(my_map.get("added4"), Some(&7));
 
     // Remove a pair, returning its value. Returned value is an Option https://doc.rust-lang.org/std/option/index.html
+    my_map.insert("removed", 4);
     let removed_value = my_map.remove("removed");
     assert_eq!(removed_value, Some(4));
     // Remove pair that does not exist, returning None
@@ -316,6 +337,16 @@ fn hash_map_operations() {
     let does_contain_value = my_map.values().any(|val| *val == value);
     assert!(does_contain_value);
     //    println!("Value '{}' contained in map: {}", value, does_contain_value);
+
+    // Merge 2 hashmaps
+    let mut first: HashMap<&str, i32> = [("one", 1), ("two", 2)].iter().cloned().collect();
+    let mut second: HashMap<&str, i32> = [("one", 1), ("three", 3)].iter().cloned().collect();
+    assert_eq!(first.get("one"), Some(&1));
+    for (key, val) in &second {
+        *first.entry(key).or_insert(0) += val
+    }
+    assert_eq!(first.get("one"), Some(&2));
+    assert_eq!(first.get("three"), Some(&3));
 }
 
 // Create vector using something similar to python "list comprehension"
