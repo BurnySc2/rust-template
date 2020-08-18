@@ -62,11 +62,13 @@ jobs:
       run: mkdir artifacts
 
     # TODO only one .so file needs to be built and it can be run from any python version on the linux distribution, and this probably also works on mac
-    # 'my_package' is the library name defined in Cargo.toml
     - name: Create archive for Linux
       run: |
         sudo apt-get install tree
         tree target/release
+      # Rename output binary because on linux the output binaries do not seem to be deterministic
+        rename -n 's/^my_package-.+[^d]$/my_package/' *
+    # 'my_package' is the library name defined in Cargo.toml
         mv ./target/release/my_package.so ./artifacts/my_package.so
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7'
 
