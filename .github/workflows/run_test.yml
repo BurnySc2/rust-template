@@ -47,8 +47,8 @@ jobs:
     - name: Run tests
       run: cargo test -- --nocapture
 
-    - name: Run benchmarks
-      run: cargo bench
+#    - name: Run benchmarks
+#      run: cargo bench
 
     - name: Run main.rs
       run: cargo run
@@ -68,6 +68,7 @@ jobs:
       run: |
         sudo apt-get install tree
         tree target/release
+        sudo apt-get install rename
         rename 's/^my_package-.+[^d]$/my_package/' *
         mv ./target/release/my_package.so ./artifacts/my_package.so
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7'
