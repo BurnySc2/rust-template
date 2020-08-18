@@ -69,8 +69,8 @@ jobs:
         sudo apt-get install tree
         tree target/release
         sudo apt-get install rename
-        rename 's/^my_package-.+[^d]$/my_package/' *
-        mv ./target/release/my_package.so ./artifacts/my_package.so
+        rename 's/^my_package-.+(?<!\.d)$/my_package/' *
+        mv ./target/release/my_package ./artifacts/my_package
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7'
 
     - name: Create archive for Windows
