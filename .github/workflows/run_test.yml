@@ -44,6 +44,11 @@ jobs:
       with:
         command: check
 
+    - name: Run cargo clippy
+      run: |
+        rustup component add clippy
+        cargo clippy
+
     - name: Run tests
       run: cargo test -- --nocapture
 
@@ -79,7 +84,11 @@ jobs:
         move ./target/release/my_package.exe ./artifacts/my_package.exe
       if: matrix.os == 'windows-latest'
 
-    # TODO Build binary for mac
+    - name: Create archive for macOS
+      run: |
+        ls target/release
+        move ./target/release/my_package ./artifacts/my_package
+      if: matrix.os == 'macOS-latest'
 
     # See - https://github.com/actions/upload-artifact/issues/39
     - uses: actions/upload-artifact@v1
@@ -87,4 +96,4 @@ jobs:
       with:
         name: ${{ matrix.os }}_python${{ matrix.python-version }}
         path: artifacts/
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' || matrix.os == 'windows-latest'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' || matrix.os == 'windows-latest' || matrix.os == 'macOS-latest'
