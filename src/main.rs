@@ -1,41 +1,3 @@
-// Commands:
-// rustup default nightly
-// Update rust installation:
-// rustup update
-
-// Downgrade to specific rust version
-// rustup install 1.40.0
-
-// Downgrade to specific nightly version at date
-// rustup install nightly-YYYY-MM-DD
-// Apply changes (I think)
-// rustup override set nightly-YYYY-MM-DD
-
-// Install package so that you can use the rust package manager: https://www.steadylearner.com/blog/read/How-to-install-Rust
-// cargo install cargo-edit
-
-// Install clippy linter https://github.com/rust-lang/rust-clippy
-// rustup component add clippy
-// cargo clippy
-
-// Run automatic formatting of source files:
-// https://github.com/rust-lang/rustfmt
-// rustup component add rustfmt
-// cargo fmt
-
-// Install crates:
-// cargo add crate_name
-// Or remove crates:
-// cargo rm crate_name
-
-// Run main.rs:
-// cargo run
-
-// Run test functions:
-// cargo test
-// Run benchmark functions:
-// cargo bench
-
 // Testing and benchmark crate
 #![feature(test)]
 extern crate test;
@@ -597,6 +559,7 @@ fn import_operations() {
 }
 
 fn os_operations() {
+    println!("Exiting program.");
     // Exit program
     std::process::exit(0);
 }

@@ -9,7 +9,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        os: [ubuntu-latest, windows-latest]
         os: [ubuntu-latest, windows-latest, macOS-latest]
         rust: [nightly]
         python-version: [3.7]
@@ -48,10 +47,41 @@ jobs:
     - name: Run tests
       run: cargo test -- --nocapture
 
-#    - name: Run benchmarks
-#      run: cargo bench
+    - name: Run benchmarks
+      run: cargo bench
+
+    - name: Run main.rs
+      run: cargo run
 
     - name: Build
       run: |
         cargo clean
         cargo build --verbose --release
+
+    - name: Create artifact directory
+      run: mkdir artifacts
+
+    # TODO only one .so file needs to be built and it can be run from any python version on the linux distribution, and this probably also works on mac
+    - name: Create archive for Linux
+      run: |
+        sudo apt-get install tree
+        tree target/release
+#        'my_package' is the library name defined in Cargo.toml
+        mv ./target/release/my_package.so ./artifacts/my_package.so
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7'
+
+    - name: Create archive for Windows
+      run: |
+        dir target/release
+        move ./target/release/my_package.exe ./artifacts/my_package.exe
+      if: matrix.os == 'windows-latest'
+
+    # TODO Build binary for mac
+
+    # See - https://github.com/actions/upload-artifact/issues/39
+    - uses: actions/upload-artifact@v1
+      name: Upload archive
+      with:
+        name: ${{ matrix.os }}_python${{ matrix.python-version }}
+        path: artifacts/
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' || matrix.os == 'windows-latest'
