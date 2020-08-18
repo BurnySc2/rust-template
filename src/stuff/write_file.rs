@@ -7,7 +7,6 @@ cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ";
 
-use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
@@ -20,17 +19,18 @@ fn write_file() {
 
     // Open a file in write-only mode, returns `io::Result<File>`
     let mut file = match File::create(&path) {
-        Err(why) => panic!("couldn't create {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't create {}: {}", display, why.to_string()),
         Ok(file) => file,
     };
 
     // Write the `LOREM_IPSUM` string to `file`, returns `io::Result<()>`
     match file.write_all(LOREM_IPSUM.as_bytes()) {
-        Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't write to {}: {}", display, why.to_string()),
         Ok(_) => println!("successfully wrote to {}", display),
     }
 }
 
+// use serde::;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 
@@ -60,13 +60,13 @@ fn write_json() -> Result<()> {
 
     // Open a file in write-only mode, returns `io::Result<File>`
     let mut file = match File::create(&path) {
-        Err(why) => panic!("couldn't create {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't create {}: {}", display, why.to_string()),
         Ok(file) => file,
     };
 
     // Write the `` string to `file`, returns `io::Result<()>`
     match file.write_all(json_string.as_bytes()) {
-        Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't write to {}: {}", display, why.to_string()),
         Ok(_) => println!("successfully wrote to {}", display),
     }
 

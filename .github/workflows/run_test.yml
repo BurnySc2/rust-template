@@ -39,24 +39,22 @@ jobs:
         toolchain: nightly
         override: true
 
-    - name: Run cargo check
-      uses: actions-rs/cargo@v1
-      with:
-        command: check
+#    - name: Run cargo check
+#      run: cargo check
 
     - name: Run cargo clippy
       run: |
         rustup component add clippy
         cargo clippy
 
-    - name: Run tests
-      run: cargo test -- --nocapture
+#    - name: Run tests
+#      run: cargo test -- --nocapture
 
 #    - name: Run benchmarks
 #      run: cargo bench
 
-    - name: Run main.rs
-      run: cargo run
+#    - name: Run main.rs
+#      run: cargo run
 
     - name: Build
       run: |
@@ -66,14 +64,17 @@ jobs:
     - name: Create artifact directory
       run: mkdir artifacts
 
-    # TODO only one .so file needs to be built and it can be run from any python version on the linux distribution, and this probably also works on mac
+    - name: Install tree rename for linux
+      run: |
+        sudo apt-get install tree
+        sudo apt-get install rename
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7'
+
     # Rename output binary because on linux the output binaries do not seem to be deterministic
     # 'my_package' is the library name defined in Cargo.toml
     - name: Create archive for Linux
       run: |
-        sudo apt-get install tree
         tree target/release
-        sudo apt-get install rename
         rename 's/^my_package-.+(?<!\.d)$/my_package/' *
         mv ./target/release/my_package ./artifacts/my_package
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7'
@@ -87,7 +88,7 @@ jobs:
     - name: Create archive for macOS
       run: |
         ls target/release
-        move ./target/release/my_package ./artifacts/my_package
+        mv ./target/release/my_package ./artifacts/my_package
       if: matrix.os == 'macOS-latest'
 
     # See - https://github.com/actions/upload-artifact/issues/39
@@ -96,4 +97,4 @@ jobs:
       with:
         name: ${{ matrix.os }}_python${{ matrix.python-version }}
         path: artifacts/
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' || matrix.os == 'windows-latest' || matrix.os == 'macOS-latest'
+      if: matrix.os == 'ubuntu-latest' || matrix.os == 'windows-latest' || matrix.os == 'macOS-latest'

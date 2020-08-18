@@ -14,7 +14,7 @@ is_empty() -> bool
 empty()
 */
 
-// yay type aliases!
+// Type aliases
 type Link = Option<Box<Node>>;
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
@@ -77,7 +77,7 @@ impl Stack {
     /// Adds an element (here: i32) at the top of the stack.
     pub fn push(&mut self, elem: i32) {
         let new_node: Node = Node {
-            elem: elem,
+            elem,
             // Set node.next to self.head
             next: self.head.take(),
         };
@@ -95,9 +95,9 @@ impl Stack {
     /// Returns the option of the first element in the stack. Option will be None if stack is empty.
     pub fn peek(&mut self) -> Option<i32> {
         if let Some(top) = self.head.clone().take() {
-            return Some(top.elem);
+            Some(top.elem)
         } else {
-            return None;
+            None
         }
     }
 
@@ -113,21 +113,21 @@ impl Stack {
         if let Some(top) = self.head.take() {
             self.size -= 1;
             self.head = top.next;
-            return Some(top.elem);
+            Some(top.elem)
         } else {
             // Stack is empty
-            return None;
+            None
         }
     }
 
     /// Returns how many elements there are in the stack
     fn size(&self) -> u32 {
-        return self.size;
+        self.size
     }
 
     /// Returns a boolean if the stack is empty
     fn is_empty(&self) -> bool {
-        return self.size == 0;
+        self.size == 0
     }
 
     // Clear the whole stack
@@ -190,8 +190,7 @@ pub fn simple_option_take_example() {
             assert_eq!(None, e.next);
         }
         None => {
-            // This should not be executed
-            assert!(false);
+            panic!("This code should not have been reached.");
         }
     }
 
@@ -201,8 +200,7 @@ pub fn simple_option_take_example() {
         assert_eq!(8, e.elem);
         assert_eq!(None, e.next);
     } else {
-        // This should not be executed
-        assert!(false);
+        panic!("This code should not have been reached.");
     }
 
     // Check a.elem == 5, a.next == b
@@ -217,8 +215,7 @@ pub fn simple_option_take_example() {
 }
 
 fn stack_create() -> Stack {
-    let new_stack = Stack::new();
-    return new_stack;
+    Stack::new()
 }
 
 fn stack_add_items() -> Stack {
@@ -226,7 +223,7 @@ fn stack_add_items() -> Stack {
     for i in 0..=9 {
         new_stack.push(i);
     }
-    return new_stack;
+    new_stack
 }
 
 fn stack_peek_items() -> Stack {
@@ -234,10 +231,10 @@ fn stack_peek_items() -> Stack {
     for i in 0..=9 {
         new_stack.push(i);
     }
-    for _i in 0..=9 {
+    for i in 0..=9 {
         new_stack.peek();
     }
-    return new_stack;
+    new_stack
 }
 
 fn stack_empty() -> Stack {
@@ -246,7 +243,7 @@ fn stack_empty() -> Stack {
         new_stack.push(i);
     }
     new_stack.head = None;
-    return new_stack;
+    new_stack
 }
 
 fn stack_empty2() -> Stack {
@@ -255,7 +252,7 @@ fn stack_empty2() -> Stack {
         new_stack.push(i);
     }
     new_stack.empty();
-    return new_stack;
+    new_stack
 }
 
 fn stack_pop_items() -> Stack {
@@ -263,10 +260,10 @@ fn stack_pop_items() -> Stack {
     for i in 0..=9 {
         new_stack.push(i);
     }
-    for _i in 0..=9 {
+    for i in 0..=9 {
         new_stack.pop();
     }
-    return new_stack;
+    new_stack
 }
 
 fn stack_test_items() {

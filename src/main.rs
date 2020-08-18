@@ -1,3 +1,8 @@
+// Standard lib: ignore dead code and unused variables
+#![allow(dead_code)]
+#![allow(unused_variables)]
+// Let clippy ignore single character variables
+#![allow(clippy::many_single_char_names)]
 // Testing and benchmark crate
 #![feature(test)]
 extern crate test;
@@ -94,8 +99,8 @@ fn string_operations() {
 
     // Seperate by white space
     let chunks: Vec<_> = hello.split_whitespace().collect();
-    for _chunk in chunks.iter() {
-        //        println!("Chunk: {}", _chunk);
+    for chunk in chunks.iter() {
+        //        println!("Chunk: {}", chunk);
     }
 
     // Format string
@@ -129,7 +134,7 @@ fn for_loop_operations() {
     // Continue and break out of outer loop
     let mut a = -3;
     'my_label: loop {
-        for _c in a - 2..a + 2 {
+        for c in a - 2..a + 2 {
             if a < 0 {
                 a += 1;
                 continue 'my_label;
@@ -146,8 +151,8 @@ fn for_loop_operations() {
 fn vec_operations() {
     // https://learning-rust.github.io/docs/b1.vectors.html
     // Create vector
-    let _a2: Vec<i32> = Vec::new();
-    let _b2: Vec<i32> = vec![];
+    let a2: Vec<i32> = Vec::new();
+    let b2: Vec<i32> = vec![];
     let b7 = vec![0; 10]; //Ten zeroes
     assert_eq!(10, b7.capacity());
 
@@ -171,14 +176,14 @@ fn vec_operations() {
     }
 
     // Iterate over vector with indices
-    for (_i, _x) in (&items).iter().enumerate() {
-        //        println!("Item {} = {}", _i, _x);
+    for (i, x) in (&items).iter().enumerate() {
+        //        println!("Item {} = {}", i, x);
     }
 
     // Iterate over slice, does not work without the '&'
     let a = vec![1, 2, 3, 4, 5];
-    for _i in &a[1..4] {
-        //        println!("{}", _i);
+    for i in &a[1..4] {
+        //        println!("{}", i);
     }
 
     // Iterate over 2 vecs at the same time, only loops until the smaller iter is exhausted
@@ -195,7 +200,7 @@ fn vec_operations() {
     }
 
     // Filter values
-    for _i in c.iter().filter(|&&x| x % 2 == 0) {
+    for i in c.iter().filter(|&&x| x % 2 == 0) {
         //        println!("{:?}", i);
     }
 
@@ -261,11 +266,11 @@ fn hash_map_operations() {
     assert_eq!(my_map.get("added2"), Some(&6));
 
     // Get value or insert default value and get that one if it didnt exist
-    let _value = my_map.entry("added3").or_insert(7);
-    assert_eq!(*_value, 7);
-    *_value += 1;
-    assert_eq!(_value, &8);
-    assert_eq!(*_value, 8);
+    let value = my_map.entry("added3").or_insert(7);
+    assert_eq!(*value, 7);
+    *value += 1;
+    assert_eq!(value, &8);
+    assert_eq!(*value, 8);
     assert_eq!(my_map.get("added3"), Some(&8));
 
     // Insert a value if it doesnt exist
@@ -281,8 +286,8 @@ fn hash_map_operations() {
     assert_eq!(removed_non_existing, None);
 
     // Loop over hashmap key and value
-    for (_key, _val) in &my_map {
-        //        println!("Key={}, Value={}", _key, _val);
+    for (key, val) in &my_map {
+        //        println!("Key={}, Value={}", key, val);
     }
 
     // Check map if contains key
@@ -302,7 +307,7 @@ fn hash_map_operations() {
 
     // Merge 2 hashmaps
     let mut first: HashMap<&str, i32> = [("one", 1), ("two", 2)].iter().cloned().collect();
-    let mut second: HashMap<&str, i32> = [("one", 1), ("three", 3)].iter().cloned().collect();
+    let second: HashMap<&str, i32> = [("one", 1), ("three", 3)].iter().cloned().collect();
     assert_eq!(first.get("one"), Some(&1));
     for (key, val) in &second {
         *first.entry(key).or_insert(0) += val
@@ -314,33 +319,28 @@ fn hash_map_operations() {
 // Create vector using something similar to python "list comprehension"
 // https://crates.io/crates/cute
 fn vec_comprehension() {
-    let v1: Vec<u32> = (0u32..9).collect::<Vec<_>>();
+    let v1: Vec<u32> = (0u32..9).collect();
+    assert_eq!(v1, vec![0, 1, 2, 3, 4, 5, 6, 7, 8]);
     // All even numbers: [0, 2, 4, 6, 8]
-    // 267 ns
     let v1: Vec<u32> = (0u32..9).filter(|x| x % 2 == 0).collect::<Vec<_>>();
     assert_eq!(v1, vec![0, 2, 4, 6, 8]);
-    // 289 ns
     let v2: Vec<_> = c![x, for x in 0u32..9, if x % 2 == 0];
     assert_eq!(v2, vec![0, 2, 4, 6, 8]);
 
     // All squares of even numbers: [0, 4, 16, 36, 64]
-    // 255 ns
     let v3: Vec<u32> = (0u32..9)
         .filter(|x| x % 2 == 0)
         .map(|x| x.pow(2))
         .collect::<Vec<_>>();
     assert_eq!(v3, vec![0, 4, 16, 36, 64]);
-    // 290 ns
     let v4: Vec<u8> = c![x*x, for x in 0u8..9, if x % 2 == 0];
     assert_eq!(v4, vec![0, 4, 16, 36, 64]);
 
     // Nested comprehension
-    // Next 2 lines: 560 - 2300 ns
     let nested1: Vec<Vec<u32>> = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
     let flat: Vec<u32> = c![x, for x in y, for y in nested1];
     assert_eq!(flat, vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-    // Next 2 lines: 412 ns
     let nested2: Vec<Vec<u32>> = vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]];
     let even_flat: Vec<u32> = c![x, for x in y, for y in nested2, if x % 2 == 0];
     assert_eq!(even_flat, vec![2, 4, 6, 8]);
