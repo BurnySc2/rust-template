@@ -216,6 +216,11 @@ fn vec_operations() {
     assert_eq!(6, *items2[1]);
     assert_eq!(5, *items2[2]);
     //    println!("My reversed items: {:?}", &items2);
+
+    // Convert array of arrays to vec of vecs
+    let v = [[1, 2], [2, 3], [2, 3], [3, 4]];
+    let v2 = v.iter().map(|x| x.to_vec()).collect::<Vec<Vec<i32>>>();
+    assert_eq!(v2, vec![vec![1, 2], vec![2, 3], vec![2, 3], vec![3, 4]]);
 }
 
 fn hash_set_operations() {
