@@ -244,6 +244,19 @@ fn hash_set_operations() {
     // Clear and asser that it is empty
     my_set.clear();
     assert!(my_set.is_empty());
+
+    // Convert vec to hashset
+    let v = vec![0, 0, 1, 2, 3, 4];
+    let my_set2 = v.iter().cloned().collect::<HashSet<i32>>();
+    assert_eq!(my_set2.len(), 5);
+    let my_set3: HashSet<i32> = v.iter().cloned().collect();
+    assert_eq!(my_set3.len(), 5);
+    let my_set4: HashSet<i32> = v.clone().into_iter().collect();
+    assert_eq!(my_set4.len(), 5);
+    assert_eq!(v.len(), 6);
+    // The following only works if 'v' is no longer used
+    let my_set5: HashSet<i32> = v.into_iter().collect();
+    assert_eq!(my_set5.len(), 5);
 }
 
 fn hash_map_operations() {
