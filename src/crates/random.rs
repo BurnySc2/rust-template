@@ -15,7 +15,7 @@ mod tests {
         let mut rng = thread_rng();
         let x: f64 = rng.gen(); // random number in range [0, 1)
         assert_eq!(0.0 <= x, x < 1.0);
-        let y: f64 = rng.gen_range(-10.0, 10.0);
+        let y: f64 = rng.gen_range(-10.0..10.0);
         assert_eq!(-10.0 <= y, y < 10.0);
     }
 
