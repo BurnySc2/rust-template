@@ -94,11 +94,13 @@ impl Stack {
 
     /// Returns the option of the first element in the stack. Option will be None if stack is empty.
     pub fn peek(&mut self) -> Option<i32> {
-        if let Some(top) = self.head.clone().take() {
-            Some(top.elem)
-        } else {
-            None
-        }
+        self.head.clone().take().map(|top| top.elem)
+        // ^ Clippy corrected the following:
+        // if let Some(top) = self.head.clone().take() {
+        //     Some(top.elem)
+        // } else {
+        //     None
+        // }
     }
 
     /// Removes and returns the option of the first element in the stack. Option will be None if stack is empty.
@@ -138,9 +140,9 @@ impl Stack {
         let mut cur_link = self.head.take();
 
         // Approach 1
-        //            while let Some(mut boxed_node) = cur_link {
-        //                cur_link = boxed_node.next.take();
-        //            }
+        while let Some(mut boxed_node) = cur_link {
+            cur_link = boxed_node.next.take();
+        }
 
         // Approach 2
         //            loop {
@@ -156,15 +158,15 @@ impl Stack {
         //            }
 
         // Approach 3
-        loop {
-            // Assign current link to the mutable option variable "boxed_node" ?
-            if let Some(mut boxed_node) = cur_link {
-                //                    cur_link: Option<Box<Node>> = boxed_node.next.take();
-                cur_link = boxed_node.next.take();
-            } else {
-                break;
-            }
-        }
+        // loop {
+        //     // Assign current link to the mutable option variable "boxed_node" ?
+        //     if let Some(mut boxed_node) = cur_link {
+        //         //                    cur_link: Option<Box<Node>> = boxed_node.next.take();
+        //         cur_link = boxed_node.next.take();
+        //     } else {
+        //         break;
+        //     }
+        // }
 
         // Approach 4
         //            self.head = None;
@@ -195,13 +197,14 @@ pub fn simple_option_take_example() {
     }
 
     // Approach 2 with if
-    //        if let Some(mut e) = c.take() {
     if let Some(e) = c.clone().take() {
         assert_eq!(8, e.elem);
         assert_eq!(None, e.next);
     } else {
         panic!("This code should not have been reached.");
     }
+
+    let f = c;
 
     // Check a.elem == 5, a.next == b
     assert_eq!(5, a.elem);

@@ -54,8 +54,8 @@ fn math_operations2() {
     assert_eq!(0i32.signum(), 0);
     assert_eq!((-10i32).signum(), -1);
     // Min and max values of i32
-    assert_eq!(i32::min_value(), -2_147_483_648);
-    assert_eq!(i32::max_value(), 2_147_483_647);
+    assert_eq!(i32::MIN, -2_147_483_648);
+    assert_eq!(i32::MAX, 2_147_483_647);
     // Round float to nearest integers, and truncate to int
     let my_float: f32 = 5.5;
     let nearest_integer = my_float.round() as i32;
@@ -82,7 +82,7 @@ fn string_conversions() {
     assert_eq!("10", my_string);
     assert_eq!(10, my_int1);
     assert_eq!(10, my_int2);
-    assert!((1.5 as f32 - my_float).abs() < f32::EPSILON);
+    assert!((1.5_f32 - my_float).abs() < f32::EPSILON);
     assert_eq!("1.23", my_float2);
 }
 
@@ -530,7 +530,7 @@ impl Square for Rectangle {
     fn is_square(&self) -> bool {
         let Point2d { x: x1, y: y1 } = self.p1;
         let Point2d { x: x2, y: y2 } = self.p2;
-        (x1 - x2).abs() - (y1 - y2).abs() < f64::EPSILON
+        ((x1 - x2).abs() - (y1 - y2).abs()).abs() < f64::EPSILON
         //        (self.p2.x - self.p1.x).abs() == (self.p2.y - self.p1.y).abs()
     }
 }
@@ -553,7 +553,7 @@ fn struct_operations() {
         p2: Point2d { x: 5.0, y: 5.0 },
     };
     assert!((30f64 - my_rect.area()).abs() < f64::EPSILON);
-    assert!((25f64 - my_square.area()) < f64::EPSILON);
+    assert!((25f64 - my_square.area()).abs() < f64::EPSILON);
     assert_eq!(false, my_rect.is_square());
     assert_eq!(true, my_square.is_square());
 }
