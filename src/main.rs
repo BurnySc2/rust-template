@@ -602,6 +602,11 @@ fn main() {
 
 // Test and benchmark configuration to test if functions are working correctly, and to test the performance of functions
 
+#[cfg(test)]
+extern crate quickcheck;
+#[cfg(test)]
+#[macro_use(quickcheck)]
+extern crate quickcheck_macros;
 #[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
@@ -610,6 +615,17 @@ mod tests {
     #[test]
     fn it_works() {
         assert_eq!(4, square_of_u32(&2));
+    }
+
+    // https://github.com/BurntSushi/quickcheck
+    // Run square_of_u32 using property based tests, checking various inputs
+    #[quickcheck]
+    fn check_square_of_u32(x: u32) -> bool {
+        // Catch out of bounds
+        if x >= 66536 {
+            return true;
+        }
+        u32::pow(x, 2) == square_of_u32(&x)
     }
 
     // This will be executed when using "cargo test" as well as benchmarked when using "cargo bench"
