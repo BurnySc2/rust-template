@@ -1,7 +1,6 @@
 #[cfg(test)] // Only compiles when running tests
 mod tests {
-    use super::*;
-    use test::Bencher;
+    // use super::*;
 
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]

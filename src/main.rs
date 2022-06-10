@@ -3,9 +3,6 @@
 #![allow(unused_variables)]
 // Let clippy ignore single character variables
 #![allow(clippy::many_single_char_names)]
-// Testing and benchmark crate
-#![feature(test)]
-extern crate test;
 
 // Import "cute" crate
 #[macro_use(c)]
@@ -100,7 +97,7 @@ fn string_operations() {
     // Seperate by white space
     let chunks: Vec<_> = hello.split_whitespace().collect();
     for chunk in chunks.iter() {
-        //        println!("Chunk: {}", chunk);
+        //    println!("Chunk: {}", chunk);
     }
 
     // Format string
@@ -207,7 +204,7 @@ fn vec_operations() {
     // Check if a value is in vector
     let value = 6;
     let result_bool = (&items).iter().any(|v| v == &value);
-    assert_eq!(true, result_bool);
+    assert!(result_bool);
     //    println!("Value {} is in vector {:?}: {}", value, &items, result_bool);
 
     // Reverse vector
@@ -554,8 +551,8 @@ fn struct_operations() {
     };
     assert!((30f64 - my_rect.area()).abs() < f64::EPSILON);
     assert!((25f64 - my_square.area()).abs() < f64::EPSILON);
-    assert_eq!(false, my_rect.is_square());
-    assert_eq!(true, my_square.is_square());
+    assert!(!my_rect.is_square());
+    assert!(my_square.is_square());
 }
 
 fn point_operations() {
@@ -608,7 +605,6 @@ fn main() {
 #[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
-    use test::Bencher;
 
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]
@@ -617,78 +613,78 @@ mod tests {
     }
 
     // This will be executed when using "cargo test" as well as benchmarked when using "cargo bench"
-    #[bench]
-    fn bench_math_operations1(b: &mut Bencher) {
-        b.iter(|| math_operations1());
+    #[test]
+    fn bench_math_operations1() {
+        math_operations1();
     }
 
-    #[bench]
-    fn bench_math_operations2(b: &mut Bencher) {
-        b.iter(|| math_operations2());
+    #[test]
+    fn bench_math_operations2() {
+        math_operations2();
     }
 
-    #[bench]
-    fn bench_string_conversions(b: &mut Bencher) {
-        b.iter(|| string_conversions());
+    #[test]
+    fn bench_string_conversions() {
+        string_conversions();
     }
 
-    #[bench]
-    fn bench_string_operations(b: &mut Bencher) {
-        b.iter(|| string_operations());
+    #[test]
+    fn bench_string_operations() {
+        string_operations();
     }
 
-    #[bench]
-    fn bench_for_loop_operations(b: &mut Bencher) {
-        b.iter(|| for_loop_operations());
+    #[test]
+    fn bench_for_loop_operations() {
+        for_loop_operations();
     }
 
-    #[bench]
-    fn bench_vec_operations(b: &mut Bencher) {
-        b.iter(|| vec_operations());
+    #[test]
+    fn bench_vec_operations() {
+        vec_operations();
     }
 
-    #[bench]
-    fn bench_hash_set_operations(b: &mut Bencher) {
-        b.iter(|| hash_set_operations());
+    #[test]
+    fn bench_hash_set_operations() {
+        hash_set_operations();
     }
 
-    #[bench]
-    fn bench_hash_map_operations(b: &mut Bencher) {
-        b.iter(|| hash_map_operations());
+    #[test]
+    fn bench_hash_map_operations() {
+        hash_map_operations();
     }
 
-    #[bench]
-    fn bench_struct_operations(b: &mut Bencher) {
-        b.iter(|| struct_operations());
+    #[test]
+    fn bench_struct_operations() {
+        struct_operations();
     }
 
-    #[bench]
-    fn bench_vec_comprehension(b: &mut Bencher) {
-        b.iter(|| vec_comprehension());
+    #[test]
+    fn bench_vec_comprehension() {
+        vec_comprehension();
     }
 
-    #[bench]
-    fn bench_hash_set_comprehension(b: &mut Bencher) {
-        b.iter(|| hash_set_comprehension());
+    #[test]
+    fn bench_hash_set_comprehension() {
+        hash_set_comprehension();
     }
 
-    #[bench]
-    fn bench_hash_map_comprehension(b: &mut Bencher) {
-        b.iter(|| hash_map_comprehension());
+    #[test]
+    fn bench_hash_map_comprehension() {
+        hash_map_comprehension();
     }
 
-    #[bench]
-    fn bench_point_operations(b: &mut Bencher) {
-        b.iter(|| point_operations());
+    #[test]
+    fn bench_point_operations() {
+        point_operations();
     }
 
-    #[bench]
-    fn bench_import_operations(b: &mut Bencher) {
-        b.iter(|| import_operations());
+    #[test]
+    fn bench_import_operations() {
+        import_operations();
     }
 
-    #[bench]
-    fn bench_heap_operations(b: &mut Bencher) {
-        b.iter(|| heap_operations());
+    #[test]
+    fn bench_heap_operations() {
+        heap_operations();
     }
 }

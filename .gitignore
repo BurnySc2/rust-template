@@ -19,3 +19,6 @@
 
 # Pycharm
 /.idea
+
+*.json
+*.txt

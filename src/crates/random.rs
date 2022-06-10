@@ -4,10 +4,8 @@
 
 #[cfg(test)] // Only compiles when running tests
 mod tests {
-    use super::*;
     use rand::seq::SliceRandom;
     use rand::{thread_rng, Rng};
-    use test::Bencher;
 
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]

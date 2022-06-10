@@ -26,11 +26,10 @@ fn untyped_example() -> Result<()> {
 #[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
-    use test::Bencher;
 
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]
     fn test_json() {
-        untyped_example();
+        let _ = untyped_example();
     }
 }

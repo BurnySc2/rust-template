@@ -19,13 +19,13 @@ fn write_file() {
 
     // Open a file in write-only mode, returns `io::Result<File>`
     let mut file = match File::create(&path) {
-        Err(why) => panic!("couldn't create {}: {}", display, why.to_string()),
+        Err(why) => panic!("couldn't create {}: {}", display, why),
         Ok(file) => file,
     };
 
     // Write the `LOREM_IPSUM` string to `file`, returns `io::Result<()>`
     match file.write_all(LOREM_IPSUM.as_bytes()) {
-        Err(why) => panic!("couldn't write to {}: {}", display, why.to_string()),
+        Err(why) => panic!("couldn't write to {}: {}", display, why),
         Ok(_) => println!("successfully wrote to {}", display),
     }
 }
@@ -60,13 +60,13 @@ fn write_json() -> Result<()> {
 
     // Open a file in write-only mode, returns `io::Result<File>`
     let mut file = match File::create(&path) {
-        Err(why) => panic!("couldn't create {}: {}", display, why.to_string()),
+        Err(why) => panic!("couldn't create {}: {}", display, why),
         Ok(file) => file,
     };
 
     // Write the `` string to `file`, returns `io::Result<()>`
     match file.write_all(json_string.as_bytes()) {
-        Err(why) => panic!("couldn't write to {}: {}", display, why.to_string()),
+        Err(why) => panic!("couldn't write to {}: {}", display, why),
         Ok(_) => println!("successfully wrote to {}", display),
     }
 
@@ -76,7 +76,6 @@ fn write_json() -> Result<()> {
 #[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
-    use test::Bencher;
 
     // This will only be executed when using "cargo test" and not "cargo bench"
     #[test]
@@ -86,6 +85,6 @@ mod tests {
 
     #[test]
     fn test_write_json() {
-        write_json();
+        let _ = write_json();
     }
 }

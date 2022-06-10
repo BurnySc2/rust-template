@@ -212,9 +212,9 @@ pub fn simple_option_take_example() {
 
     // Check b.next == None, b.next.is_none() == true
     assert_eq!(None, b.next);
-    assert_eq!(true, b.next.is_none());
+    assert!(b.next.is_none());
     // Check d.is_none() == true
-    assert_eq!(true, d.is_none());
+    assert!(d.is_none());
 }
 
 fn stack_create() -> Stack {
@@ -303,7 +303,7 @@ fn stack_test_items() {
 #[cfg(test)] // Only compiles when running tests
 mod tests {
     use super::*;
-    use test::Bencher;
+    // use test::Bencher;
 
     #[test]
     fn bench_stack_test_items() {
@@ -315,33 +315,33 @@ mod tests {
         simple_option_take_example();
     }
 
-    #[bench]
-    fn bench_stack_create(b: &mut Bencher) {
-        b.iter(|| stack_create());
+    #[test]
+    fn bench_stack_create() {
+        stack_create();
     }
 
-    #[bench]
-    fn bench_stack_add_items(b: &mut Bencher) {
-        b.iter(|| stack_add_items());
+    #[test]
+    fn bench_stack_add_items() {
+        stack_add_items();
     }
 
-    #[bench]
-    fn bench_stack_empty(b: &mut Bencher) {
-        b.iter(|| stack_empty());
+    #[test]
+    fn bench_stack_empty() {
+        stack_empty();
     }
 
-    #[bench]
-    fn bench_stack_empty2(b: &mut Bencher) {
-        b.iter(|| stack_empty2());
+    #[test]
+    fn bench_stack_empty2() {
+        stack_empty2();
     }
 
-    #[bench]
-    fn bench_stack_peek_items(b: &mut Bencher) {
-        b.iter(|| stack_peek_items());
+    #[test]
+    fn bench_stack_peek_items() {
+        stack_peek_items();
     }
 
-    #[bench]
-    fn bench_stack_pop_items(b: &mut Bencher) {
-        b.iter(|| stack_pop_items());
+    #[test]
+    fn bench_stack_pop_items() {
+        stack_pop_items();
     }
 }

@@ -2,7 +2,7 @@
 name = "my_package"
 version = "0.1.0"
 authors = ["BuRny <gamingburny@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 # To have vector, map and set comprehension
