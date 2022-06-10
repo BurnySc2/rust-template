@@ -10,33 +10,34 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        rust: [nightly]
+        rust-version: [stable, nightly]
         python-version: ["3.10"]
 
     steps:
     # https://github.com/actions-rs/toolchain
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Cache cargo registry
-      uses: actions/cache@v1
+      uses: Swatinem/rust-cache@v1
       with:
-        path: ~/.cargo/registry
-        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ matrix.os }}-${{ matrix.rust-version }}-${{ matrix.python-version }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
     - name: Cache cargo index
       uses: actions/cache@v1
       with:
         path: ~/.cargo/git
         key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
     - name: Cache cargo build
       uses: actions/cache@v1
       with:
         path: target
         key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
 
-    - name: Install latest nightly
+    - name: Install rust toolchain
       uses: actions-rs/toolchain@v1
       with:
-        toolchain: nightly
+        toolchain: ${{ matrix.rust-version }}
         override: true
 
     - name: Run cargo check
@@ -66,8 +67,7 @@ jobs:
 
     - name: Install tree rename for linux
       run: |
-        sudo apt-get install tree
-        sudo apt-get install rename
+        sudo apt install tree rename
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
 
     # Rename output binary because on linux the output binaries do not seem to be deterministic
