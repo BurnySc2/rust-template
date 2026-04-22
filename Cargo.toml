@@ -8,7 +8,7 @@ edition = "2021"
 # To have vector, map and set comprehension
 cute = "0.3.0"
 # To generate random numbers
-rand = "0.8.3"
+rand = "0.8.6"
 # Serialize and deserialize structs
 serde = { version = "1.0.125", features = ["derive"] }
 serde_json = "1.0.64"
